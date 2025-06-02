@@ -64,7 +64,7 @@ export default function Countries({ visible, setVisible }: Props) {
                     isSelected
                         ? "border-blue-500 bg-blue-50"
                         : "border-gray-200"
-                } rounded hover:bg-gray-100 cursor-pointer mb-3 flex items-center gap-[10px]`}
+                } rounded hover:bg-gray-100 cursor-pointer mb-3 flex flex-col justify-center items-center gap-[10px] `}
                 style={{ minHeight: "60px", width: "100%" }}
             >
                 {country?.flag && (
@@ -76,11 +76,11 @@ export default function Countries({ visible, setVisible }: Props) {
                     />
                 )}
 
-                <span className="text-[14px] font-medium">
+                <span className="text-center text-[14px] font-medium">
                     {country?.name || "Unknown Country"}
                 </span>
                 {isSelected && (
-                    <span className="ml-auto text-blue-500 text-sm font-medium">
+                    <span className="text-center text-blue-500 text-sm font-medium">
                         ✓ Selected
                     </span>
                 )}
