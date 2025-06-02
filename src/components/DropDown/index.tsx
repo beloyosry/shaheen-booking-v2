@@ -1,15 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import useHideDialog from "../../hooks/useHideDialog";
-
-type Country = {
-    name: string;
-    code?: string;
-    entityId?: string;
-    country?: {
-        name: string;
-    };
-};
+import type { Country } from "../../types";
 
 type Props = {
     visible?: boolean;
@@ -152,17 +144,15 @@ function DropDown({
                                         <div
                                             key={index}
                                             onClick={() => {
-                                                setActive(
-                                                    item.entityId || null
-                                                );
+                                                setActive(item.id || null);
                                                 if (
                                                     formik &&
                                                     fieldname &&
-                                                    item.entityId
+                                                    item.id
                                                 ) {
                                                     formik.setFieldValue(
                                                         fieldname,
-                                                        item.entityId
+                                                        item.id
                                                     );
                                                 }
                                                 if (setState) {
@@ -175,7 +165,7 @@ function DropDown({
                                                 });
                                             }}
                                             className={`p-[10px] transition cursor-pointer hover:bg-[#F2F2F3] ${
-                                                active === item?.entityId
+                                                active === item?.id
                                                     ? "bg-[#F2F2F3]"
                                                     : ""
                                             } ${
@@ -192,14 +182,11 @@ function DropDown({
                                                 <span className="font-bold text-[14px]">
                                                     {item?.name}
                                                 </span>
-                                                {item?.country && (
+                                                {item?.name && (
                                                     <div className="flex items-center gap-1">
                                                         <i className="fa-light fa-globe text-[10px] text-gray-500"></i>
                                                         <span className="text-[11px] text-gray-500">
-                                                            {
-                                                                item?.country
-                                                                    ?.name
-                                                            }
+                                                            {item?.name}
                                                         </span>
                                                     </div>
                                                 )}

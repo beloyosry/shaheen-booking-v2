@@ -11,15 +11,9 @@ import RomesInfo from "./RomesInfo";
 import { useSetLocale } from "../../hooks/useLocale";
 import axios from "axios";
 import { useRegionStore } from "../../store/regions.store";
+import type { Country } from "../../types";
 
-type Country = {
-    name: string;
-    code?: string;
-    entityId?: string;
-    country?: {
-        name: string;
-    };
-};
+
 
 function BookHotel() {
     const { countries } = useRegionStore();

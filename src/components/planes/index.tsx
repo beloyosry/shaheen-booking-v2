@@ -8,16 +8,7 @@ import TravelLevel from "../TravelLevel/TravelLevel";
 import DropDown from "../DropDown";
 import { useRegionStore } from "../../store/regions.store";
 import { localeStore } from "../../store/locale.store";
-
-// Define the Country type to match what DropDown expects
-type Country = {
-    name: string;
-    code?: string;
-    entityId?: string;
-    country?: {
-        name: string;
-    };
-};
+import type { Country } from "../../types";
 
 function BookPlane() {
     const { setPopupVisible } = usePopupStore();
@@ -30,11 +21,13 @@ function BookPlane() {
 
     const [originCountry, setOriginCountry] = useState<Country | null>({
         name: "القاهرة",
+        code: "EG",
     });
 
     const [destinationCountry, setDestinationCountry] =
         useState<Country | null>({
             name: "مينوركا",
+            code: "MX",
         });
 
     const handleSubmit = () =>
