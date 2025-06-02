@@ -64,7 +64,7 @@ export const useRegionStore = create<RegionState>()(
             },
 
             setSelectedCountry: (country: Country) => {
-                set({ selectedCountry: country });
+                set({ selectedCountry: country, countryCode: country.code });
             },
 
             initializeRegions: async () => {
@@ -78,51 +78,82 @@ export const useRegionStore = create<RegionState>()(
                         useLoadingStore.getState().setIsLoading;
                     setIsLoading(true);
 
-                    // Step 1: Get user's country information
+                    // Step 1: First get user's country information from geolocation
                     const userCountryData = await get().getUserCountry();
-                    if (!userCountryData) {
-                        console.warn(
-                            "Could not fetch user country data, continuing initialization"
-                        );
-                    }
 
-                    // Step 2: Get all countries (only if we don't already have them)
-                    if (get().countries.length === 0) {
-                        await get().getCountries();
-                    }
+                    // Step 2: Then get all countries list
+                    await get().getCountries();
 
-                    // Step 3: Find the user's country in the countries list and set it as selected
+                    const countries = get().countries;
+                    let selectedCountry = null;
+
+                    // Step 3: Try to find the user's country in the countries list
                     if (userCountryData && userCountryData.country_code) {
                         const userCountryCode = userCountryData.country_code;
-                        const countries = get().countries;
 
+                        // Try to find exact match by country code
                         const userCountry = countries.find(
                             (country) => country.code === userCountryCode
                         );
 
                         if (userCountry) {
                             // Add flag and city information
-                            const enhancedUserCountry = {
+                            selectedCountry = {
                                 ...userCountry,
                                 flag: get().getCountryFlag(userCountry.code),
                                 city: userCountryData.city || "",
                                 currency: userCountryData.country_code || "",
                             };
+                            console.log(
+                                "Found matching country in list:",
+                                selectedCountry.name
+                            );
 
-                            set({ selectedCountry: enhancedUserCountry });
+                            set({ selectedCountry });
+
+                            set({ isInitialized: true });
+                            return;
                         }
                     }
 
-                    // Mark as initialized to prevent duplicate calls
-                    set({ isInitialized: true });
+                    // If we still don't have a selected country but we have geolocation data, create a country from it
+                    if (!selectedCountry && userCountryData) {
+                        // Create a country directly from geolocation data
+                        selectedCountry = {
+                            code: userCountryData.country_code,
+                            name: userCountryData.country, // The API returns the country name
+                            flag: get().getCountryFlag(
+                                userCountryData.country_code
+                            ),
+                            city: userCountryData.city || "",
+                            currency: userCountryData.country_code,
+                        };
+
+                        set({ selectedCountry });
+
+                        set({ isInitialized: true });
+                        return;
+                    }
+
                     setIsLoading(false);
                 } catch (error) {
                     const setIsLoading =
                         useLoadingStore.getState().setIsLoading;
                     setIsLoading(false);
+
+                    // Even on error, set a default country
+                    const defaultCountry = {
+                        code: "EG",
+                        name: "Egypt",
+                        flag: get().getCountryFlag("EG"),
+                        city: "Cairo",
+                        currency: "EG",
+                    };
+
                     set({
                         error: "Failed to initialize regions",
                         isInitialized: true, // Mark as initialized even on error to prevent loops
+                        selectedCountry: defaultCountry,
                     });
                     console.error("Error initializing regions:", error);
                 }
@@ -156,17 +187,22 @@ export const useRegionStore = create<RegionState>()(
             },
 
             getCountries: async () => {
-                // If we already have countries and not forcing a refresh, return early
-                if (get().countries.length > 0) {
-                    return;
-                }
-
                 // If already loading, don't make duplicate requests
                 if (get().isLoadingCountries) {
                     return;
                 }
 
+                // If we already have countries, don't fetch again
+                if (get().countries.length > 0) {
+                    console.log(
+                        "Using existing countries list, count:",
+                        get().countries.length
+                    );
+                    return;
+                }
+
                 try {
+                    console.log("Fetching countries list from API");
                     const setIsLoading =
                         useLoadingStore.getState().setIsLoading;
                     setIsLoading(true);
@@ -191,6 +227,11 @@ export const useRegionStore = create<RegionState>()(
                         })
                     );
 
+                    console.log(
+                        "Fetched countries count:",
+                        enhancedCountries.length
+                    );
+
                     set({
                         countries: enhancedCountries,
                         isLoadingCountries: false,
@@ -198,6 +239,7 @@ export const useRegionStore = create<RegionState>()(
 
                     setIsLoading(false);
                 } catch (error) {
+                    console.error("Error fetching countries:", error);
                     const setIsLoading =
                         useLoadingStore.getState().setIsLoading;
                     setIsLoading(false);
