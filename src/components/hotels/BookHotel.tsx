@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useCurrencyStore } from "../../store/currency.store";
 import DatePicker from "../DatePicker";
 import DropDown from "../DropDown";
 import { useEffect, useState } from "react";
@@ -11,6 +10,7 @@ import { useFormik } from "formik";
 import RomesInfo from "./RomesInfo";
 import { useSetLocale } from "../../hooks/useLocale";
 import axios from "axios";
+import { useRegionStore } from "../../store/regions.store";
 
 type Country = {
     name: string;
@@ -22,7 +22,7 @@ type Country = {
 };
 
 function BookHotel() {
-    const { countriesData } = useCurrencyStore();
+    const { countries } = useRegionStore();
     const { getHotelCodesByCity } = useHotelsStore();
     const { isLoading, setIsLoading } = useLoadingStore();
     const pathname = useLocation();
@@ -30,91 +30,91 @@ function BookHotel() {
 
     const [originCountry, setOriginCountry] = useState<any>(null);
 
-    useEffect(() => {
-        const fetchCitiesForStoredCountry = async () => {
-            try {
-                // Get stored country from localStorage
-                const storedCountryData =
-                    localStorage.getItem("shaheen-currency");
-                if (!storedCountryData) {
-                    // If no stored country, set a default
-                    setOriginCountry({ name: "القاهرة" });
-                    setIsLoading(false);
-                    return;
-                }
+    // useEffect(() => {
+    //     const fetchCitiesForStoredCountry = async () => {
+    //         try {
+    //             // Get stored country from localStorage
+    //             const storedCountryData =
+    //                 localStorage.getItem("shaheen-currency");
+    //             if (!storedCountryData) {
+    //                 // If no stored country, set a default
+    //                 setOriginCountry({ name: "القاهرة" });
+    //                 setIsLoading(false);
+    //                 return;
+    //             }
 
-                const parsedCountryData = JSON.parse(storedCountryData);
-                const countryCode = parsedCountryData.code;
-                const storedCity = parsedCountryData.city;
+    //             const parsedCountryData = JSON.parse(storedCountryData);
+    //             const countryCode = parsedCountryData.code;
+    //             const storedCity = parsedCountryData.city;
 
-                if (!countryCode || !storedCity) {
-                    setOriginCountry({ name: "القاهرة" });
-                    setIsLoading(false);
-                    return;
-                }
+    //             if (!countryCode || !storedCity) {
+    //                 setOriginCountry({ name: "القاهرة" });
+    //                 setIsLoading(false);
+    //                 return;
+    //             }
 
-                // Fetch cities for the country code
-                const response = await axios.post("/regions/cities", {
-                    country_code: countryCode,
-                });
+    //             // Fetch cities for the country code
+    //             const response = await axios.post("/regions/cities", {
+    //                 country_code: countryCode,
+    //             });
 
-                if (
-                    response.data &&
-                    response.data.success &&
-                    Array.isArray(response.data.data)
-                ) {
-                    const cities = response.data.data;
+    //             if (
+    //                 response.data &&
+    //                 response.data.success &&
+    //                 Array.isArray(response.data.data)
+    //             ) {
+    //                 const cities = response.data.data;
 
-                    // Try to find the stored city in the response
-                    const matchedCity = cities.find(
-                        (city: any) =>
-                            city.name.toLowerCase() === storedCity.toLowerCase()
-                    );
+    //                 // Try to find the stored city in the response
+    //                 const matchedCity = cities.find(
+    //                     (city: any) =>
+    //                         city.name.toLowerCase() === storedCity.toLowerCase()
+    //                 );
 
-                    let selectedCity;
+    //                 let selectedCity;
 
-                    if (matchedCity) {
-                        // If found, set it as the default city
-                        selectedCity = {
-                            name: matchedCity.name,
-                            code: matchedCity.code,
-                            entityId: matchedCity.code, // Assuming entityId is the same as code
-                        };
-                        setOriginCountry(selectedCity);
-                    } else {
-                        // If not found, use the first city in the list
-                        if (cities.length > 0) {
-                            selectedCity = {
-                                name: cities[0].name,
-                                code: cities[0].code,
-                                entityId: cities[0].code,
-                            };
-                            setOriginCountry(selectedCity);
-                        } else {
-                            // Fallback to default
-                            selectedCity = { name: "القاهرة" };
-                            setOriginCountry(selectedCity);
-                        }
-                    }
+    //                 if (matchedCity) {
+    //                     // If found, set it as the default city
+    //                     selectedCity = {
+    //                         name: matchedCity.name,
+    //                         code: matchedCity.code,
+    //                         entityId: matchedCity.code, // Assuming entityId is the same as code
+    //                     };
+    //                     setOriginCountry(selectedCity);
+    //                 } else {
+    //                     // If not found, use the first city in the list
+    //                     if (cities.length > 0) {
+    //                         selectedCity = {
+    //                             name: cities[0].name,
+    //                             code: cities[0].code,
+    //                             entityId: cities[0].code,
+    //                         };
+    //                         setOriginCountry(selectedCity);
+    //                     } else {
+    //                         // Fallback to default
+    //                         selectedCity = { name: "القاهرة" };
+    //                         setOriginCountry(selectedCity);
+    //                     }
+    //                 }
 
-                    // Fetch hotel codes for the selected city
-                    if (selectedCity && selectedCity.code) {
-                        getHotelCodesByCity(selectedCity.code);
-                    }
-                } else {
-                    // Fallback to default if API call fails
-                    setOriginCountry({ name: "القاهرة" });
-                }
-            } catch (error) {
-                console.error("Error fetching cities:", error);
-                setOriginCountry({ name: "القاهرة" });
-            } finally {
-                setIsLoading(false);
-            }
-        };
+    //                 // Fetch hotel codes for the selected city
+    //                 if (selectedCity && selectedCity.code) {
+    //                     getHotelCodesByCity(selectedCity.code);
+    //                 }
+    //             } else {
+    //                 // Fallback to default if API call fails
+    //                 setOriginCountry({ name: "القاهرة" });
+    //             }
+    //         } catch (error) {
+    //             console.error("Error fetching cities:", error);
+    //             setOriginCountry({ name: "القاهرة" });
+    //         } finally {
+    //             setIsLoading(false);
+    //         }
+    //     };
 
-        fetchCitiesForStoredCountry();
-    }, []);
+    //     fetchCitiesForStoredCountry();
+    // }, []);
 
     const handleCitySelection = (selectedCity: Country) => {
         setOriginCountry(selectedCity);
@@ -187,8 +187,8 @@ function BookHotel() {
 
             <div className="flex items-center flex-wrap lg:flex-nowrap gap-[18px] lg:gap-0">
                 <DropDown
-                    items={countriesData}
-                    searchList={countriesData}
+                    items={countries}
+                    searchList={countries}
                     visible={visible?.transferCountryLocation}
                     setVisible={setVisible}
                     formik={formik}

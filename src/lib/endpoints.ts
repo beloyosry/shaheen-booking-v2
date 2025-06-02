@@ -25,9 +25,116 @@ export const ENDPOINTS = {
         resetPassword: () => api.post(`/reset-password`),
         profile: () => api.get(`/profile`),
     },
-    country: {
-        countriesInfo: () =>
+    regions: {
+        getUserCountry: () =>
             externalAxios.get("https://get.geojs.io/v1/ip/geo.json"),
+        /*Response :
+            {
+                "area_code": "0",
+                "organization_name": "Etisalat Misr",
+                "country_code": "EG",
+                "country_code3": "EGY",
+                "continent_code": "AF",
+                "region": "Cairo Governorate",
+                "latitude": "30.0507",
+                "longitude": "31.2489",
+                "accuracy": 5,
+                "asn": 36992,
+                "timezone": "Africa\/Cairo",
+                "city": "Cairo",
+                "organization": "AS36992 Etisalat Misr",
+                "country": "Egypt",
+                "ip": "2c0f:fc89:8070:e18d:ac30:9f84:5771:d0a"
+            }
+        */
+
+        getFlag: (countryCode: string) =>
+            api.get(
+                `https://flagcdn.com/w80/${countryCode!.toLowerCase()}.png`
+            ),
+
+        getRegions: () => api.get("/regions"),
+        /*Response :
+            {
+                "success": true,
+                "message": "Success api call",
+                "data": {
+                    "perPage": 10,
+                    "currentPage": 1,
+                    "lastPage": 4980,
+                    "nextPageUrl": "https:\/\/dev.shaheen-booking.com\/api\/regions?page=2",
+                    "items": [
+                        {
+                            "id": 1,
+                            "code": "106078",
+                            "name": "Albanien",
+                            "country": {
+                                "id": 1,
+                                "code": "AL",
+                                "name": "Albania",
+                                "createdAt": "2025-05-03 11:28:50",
+                                "updatedAt": "2025-05-03 11:28:50"
+                            },
+                            "createdAt": "2025-05-03 11:28:50",
+                            "updatedAt": "2025-05-03 11:28:50"
+                        },
+                    ]
+            }
+        */
+
+        getCountries: () => api.get("/regions/countries"),
+        /*Response :
+            {
+                "success": true,
+                "message": "Success api call",
+                "data": {
+                    "perPage": 10,
+                    "currentPage": 1,
+                    "lastPage": 4980,
+                    "nextPageUrl": "https:\/\/dev.shaheen-booking.com\/api\/regions?page=2",
+                    "items": [
+                        {
+                            "code": "AL",
+                            "name": "Albania"
+                        },
+                        {
+                        "code": "AD",
+                        "name": "Andorra"
+                    },
+                    {
+                        "code": "AG",
+                        "name": "Antigua"
+                    },
+                    {
+                        "code": "AR",
+                        "name": "Argentina"
+                    },
+                ]
+            }
+        */
+
+        getCities: (country_code: string) =>
+            api.post("/regions/cities", country_code),
+        /* Response:
+            {
+                "success": true,
+                "message": "Success api call",
+                "data": [
+                    {
+                        "code": "100639",
+                        "name": "6th of October City"
+                    },
+                    {
+                        "code": "100332",
+                        "name": "Abu Dabab"
+                    },
+                    {
+                        "code": "100119",
+                        "name": "Abu Simbel"
+                    },
+                ]
+            }
+        */
     },
     hotel: {
         public: {

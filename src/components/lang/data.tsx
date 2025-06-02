@@ -1,3 +1,5 @@
+import { localeStore } from "../../store/locale.store";
+
 // That's Will Set The Lang Cookie To Cookie
 function setCookie(key: string, value: string, expiry: number) {
     const expires = new Date();
@@ -7,13 +9,14 @@ function setCookie(key: string, value: string, expiry: number) {
 
 // To Render The Table Of Lang
 export const gridItem = (product: any) => {
+    const { setLocale } = localeStore();
     return (
         <div
             className="bg-white col-span-6 sm:col-span-6 md:col-span-4 xl:col-span-3 cursor-pointer p-2"
             onClick={() => {
                 // To ensure the language of the page changed
                 setCookie("googtrans", `/en/${product.code}`, 1);
-                localStorage.setItem("lang", product.lang_code || "ar-AE");
+                setLocale(product.lang_code || "ar-AE");
 
                 setTimeout(() => {
                     window.location.reload();

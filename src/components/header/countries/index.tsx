@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useHideDialog from "../../../hooks/useHideDialog";
-import { useCurrencyStore } from "../../../store/currency.store";
 import DataTableView from "../../dataTableView";
+import { useRegionStore } from "../../../store/regions.store";
 
 type Props = {
     visible: boolean;
@@ -17,85 +17,30 @@ interface Country {
 
 export default function Countries({ visible, setVisible }: Props) {
     useHideDialog(setVisible);
-    const [countries, setCountries] = useState<Country[]>([]);
-    const { setCurrency, setCountriesData, countriesData, countryCode } =
-        useCurrencyStore();
+    const { countries, getCountries, selectedCountry, setSelectedCountry } =
+        useRegionStore();
 
-    // Effect to load countries when visible
     useEffect(() => {
-        if (visible) {
-            setCountriesData();
+        // Only fetch countries when the component becomes visible and countries are empty
+        if (visible && countries.length === 0) {
+            getCountries();
         }
-    }, [setCountriesData, visible]);
-
-    // Process countries data when it changes
-    useEffect(() => {
-        if (!countriesData) return;
-
-        if (Array.isArray(countriesData)) {
-            const data = countriesData.filter(
-                (country) =>
-                    country && country.name && country.name !== "Israel"
-            );
-
-            if (data.length > 0) {
-                setCountries(data);
-
-                // If we have the user's country code, find and set the corresponding country
-                if (countryCode) {
-                    const userCountry = data.find(
-                        (country) => country.code === countryCode
-                    );
-                    if (userCountry) {
-                        // Add city to the country object (if we had city info)
-                        const countryWithCity = {
-                            ...userCountry,
-                            city: "",
-                        };
-
-                        setCurrency(countryWithCity);
-                        localStorage.setItem(
-                            "shaheen-currency",
-                            JSON.stringify(countryWithCity)
-                        );
-                    } else {
-                        // Set default country if user's country not found
-                        if (data[0]) {
-                            const defaultWithCity = {
-                                ...data[0],
-                                city: "",
-                            };
-
-                            setCurrency(defaultWithCity);
-                            localStorage.setItem(
-                                "shaheen-currency",
-                                JSON.stringify(defaultWithCity)
-                            );
-                        }
-                    }
-                }
-            } else {
-                console.warn("Filtered countries data is empty");
-                setCountries([]);
-            }
-        } else {
-            console.error("Countries data is not an array:", countriesData);
-            setCountries([]);
-        }
-    }, [countriesData, countryCode, setCurrency]);
+    }, [visible, countries.length, getCountries]);
 
     const handleClick = (country: Country) => {
-        // Add city information to the country object
+        // Add city information to the country object if it doesn't exist
         const countryWithCity = {
             ...country,
-            city: "", // We don't have city information, so use empty string
+            city: country.city || "", // Use existing city or empty string
+            currency: country.code, // Use country code as currency
         };
 
-        setCurrency(countryWithCity);
-        localStorage.setItem(
-            "shaheen-currency",
-            JSON.stringify(countryWithCity)
-        );
+        // Set as selected country in the region store
+        setSelectedCountry(countryWithCity);
+
+        // Also update the currency store
+        // setCurrency(countryWithCity);
+
         setVisible(false);
     };
 
@@ -109,10 +54,17 @@ export default function Countries({ visible, setVisible }: Props) {
             );
         }
 
+        // Check if this country is the currently selected one
+        const isSelected = selectedCountry?.code === country.code;
+
         return (
             <div
                 onClick={() => handleClick(country)}
-                className="p-4 border border-gray-200 rounded hover:bg-gray-100 cursor-pointer mb-3 flex items-center gap-[10px]"
+                className={`p-4 border ${
+                    isSelected
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-gray-200"
+                } rounded hover:bg-gray-100 cursor-pointer mb-3 flex items-center gap-[10px]`}
                 style={{ minHeight: "60px", width: "100%" }}
             >
                 {country?.flag && (
@@ -127,6 +79,11 @@ export default function Countries({ visible, setVisible }: Props) {
                 <span className="text-[14px] font-medium">
                     {country?.name || "Unknown Country"}
                 </span>
+                {isSelected && (
+                    <span className="ml-auto text-blue-500 text-sm font-medium">
+                        ✓ Selected
+                    </span>
+                )}
             </div>
         );
     };

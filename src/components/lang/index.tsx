@@ -12,15 +12,15 @@ export default function Languages({ visible, setVisible }: Props) {
 
     return (
         <div
-            className={`absolute  w-full transition-all bg-white left-0 z-50  ${
+            className={`absolute left-0 transition ${
                 visible
-                    ? "bottom-0 opacity-100 visible"
-                    : "-bottom-[300px] opacity-0 invisible"
-            }`}
+                    ? " opacity-100 visible z-[1000] top-20"
+                    : "top-[300px] invisible opacity-0"
+            } bg-white p-5 shadow-lg z-20 w-full`}
             onClick={(e) => e.stopPropagation()}
         >
             <div
-                className={`absolute bg-white left-0 p-5 bg-red w-full h-full shadow-lg z-50`}
+                className={`absolute bg-white left-0 z-[1200] p-5 bg-red w-full shadow-lg`}
             >
                 <div className={`container lg:px-32`}>
                     {visible ? (

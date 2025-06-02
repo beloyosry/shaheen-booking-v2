@@ -1,4 +1,3 @@
-import { useCurrencyStore } from "../../store/currency.store";
 import { usePopupStore } from "../../store/pop-up.store";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
@@ -7,6 +6,8 @@ import { Checkbox } from "primereact/checkbox";
 import DatePicker from "../DatePicker";
 import TravelLevel from "../TravelLevel/TravelLevel";
 import DropDown from "../DropDown";
+import { useRegionStore } from "../../store/regions.store";
+import { localeStore } from "../../store/locale.store";
 
 // Define the Country type to match what DropDown expects
 type Country = {
@@ -20,7 +21,8 @@ type Country = {
 
 function BookPlane() {
     const { setPopupVisible } = usePopupStore();
-    const { currency, countriesData } = useCurrencyStore();
+    const { countries, selectedCountry } = useRegionStore();
+    const { locale } = localeStore();
 
     const [tickets, setTicketType] = useState("round-trip");
 
@@ -44,8 +46,6 @@ function BookPlane() {
             title: "Success",
         });
 
-    const locale = localStorage.getItem("lang");
-
     const formik = useFormik({
         initialValues: {
             originEntityId: "104120222",
@@ -62,12 +62,12 @@ function BookPlane() {
     });
 
     useEffect(() => {
-        formik.setFieldValue("shaheen-currency", currency?.code);
-        formik.setFieldValue("market", currency?.code);
+        formik.setFieldValue("shaheen-currency", selectedCountry?.code);
+        formik.setFieldValue("market", selectedCountry?.code);
         formik.setFieldValue("locale", locale || "ar-AE");
 
         return () => {};
-    }, [currency]);
+    }, [selectedCountry]);
 
     const [visible, setVisible] = useState({
         travelLevel: false,
@@ -129,8 +129,8 @@ function BookPlane() {
             <div className="flex items-center flex-wrap lg:flex-nowrap gap-[18px] lg:gap-0">
                 {/* Create a wrapper function to adapt the setVisible prop */}
                 <DropDown
-                    items={countriesData}
-                    searchList={countriesData}
+                    items={countries}
+                    searchList={countries}
                     formik={formik}
                     fieldname={"originEntityId"}
                     visible={visible?.transferFrom}
@@ -209,8 +209,8 @@ function BookPlane() {
                 </div>
 
                 <DropDown
-                    items={countriesData}
-                    searchList={countriesData}
+                    items={countries}
+                    searchList={countries}
                     formik={formik}
                     fieldname={"destinationEntityId"}
                     visible={visible?.transferTo}
@@ -287,7 +287,7 @@ function BookPlane() {
                 />
 
                 <DropDown
-                    items={countriesData}
+                    items={countries}
                     visible={visible?.travelLevel}
                     setVisible={(value) => {
                         // This adapter function converts between the two state structures

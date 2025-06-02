@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import { useAuthStore } from "../store/auth.store";
-import { useCurrencyStore } from "../store/currency.store";
+import { useRegionStore } from "../store/regions.store";
 
 export const useInitializeApp = () => {
     const { isAuthenticated, fetchProfile } = useAuthStore();
-    const { initializeUserCurrency, hasStoredCurrency } = useCurrencyStore();
+    const { initializeRegions } = useRegionStore();
     const initializationDone = useRef(false);
 
     useEffect(() => {
@@ -18,15 +18,8 @@ export const useInitializeApp = () => {
                     await fetchProfile();
                 }
 
-                // Check if currency exists in store and initialize if needed
-                if (!hasStoredCurrency()) {
-                    console.log(
-                        "No currency found in store, setting default..."
-                    );
-
-                    // Initialize currency based on user location and countries data
-                    await initializeUserCurrency();
-                }
+                // Initialize regions data (user location, countries, etc.)
+                await initializeRegions();
             } catch (error) {
                 console.error("Error loading initial data:", error);
             }

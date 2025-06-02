@@ -5,9 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import type { User } from "../../../types";
 import { useAuthStore } from "../../../store/auth.store";
 import Button from "../../ui/Button";
-import { useCurrencyStore } from "../../../store/currency.store";
 import Countries from "../countries";
 import Languages from "../../lang";
+import { useRegionStore } from "../../../store/regions.store";
+import { localeStore } from "../../../store/locale.store";
 
 type LoginPartProps = {
     user: User | null;
@@ -105,7 +106,8 @@ const Guest = () => {
 
 export default function HeaderAuth({ setVisible }: HeaderProps) {
     const { user, isAuthenticated, logout } = useAuthStore();
-    const { currency } = useCurrencyStore();
+    const { selectedCountry } = useRegionStore();
+    const { locale } = localeStore();
     const [visible, setCountriesVisible] = useState(false);
     const [langVisible, setLangVisible] = useState(false);
 
@@ -113,7 +115,7 @@ export default function HeaderAuth({ setVisible }: HeaderProps) {
         <div className="flex items-center gap-2">
             <div className="w-[30px] sm:w-[42px] h-[30px] sm:h-[42px] sm:p-2 shadow-sm border border-[var(--secondary)] rounded-full flex items-center justify-center">
                 <p className="text-[7.247px] sm:text-[12.062px] font-medium min-w-[30px] sm:min-w-[34px] h-[30px] sm:h-[34px] rounded-full flex justify-center items-center bg-white">
-                    {currency?.code || "SAR"}
+                    {selectedCountry?.code || "SAR"}
                 </p>
             </div>
             <div
@@ -125,7 +127,7 @@ export default function HeaderAuth({ setVisible }: HeaderProps) {
                 className="w-[30px] sm:w-[42px] h-[30px] sm:h-[42px] sm:p-2 shadow-sm border border-[var(--secondary)] rounded-full flex items-center justify-center cursor-pointer"
             >
                 <p className="text-[7.247px] sm:text-[12.062px] font-medium min-w-[30px] sm:min-w-[34px] h-[30px] sm:h-[34px] rounded-full flex justify-center items-center bg-white">
-                    AR
+                    {locale.split("-")[0].toUpperCase()}
                 </p>
             </div>
 
@@ -138,7 +140,7 @@ export default function HeaderAuth({ setVisible }: HeaderProps) {
                 className="w-[30px] sm:w-[42px] h-[30px] p-[2px] sm:h-[42px] shadow-sm border border-[var(--secondary)] rounded-full flex items-center justify-center cursor-pointer"
             >
                 <img
-                    src={currency?.flag || default_country}
+                    src={selectedCountry?.flag || default_country}
                     loading="lazy"
                     onError={(e) => (e.currentTarget.src = default_country)}
                     className="w-full h-full rounded-full object-cover"
