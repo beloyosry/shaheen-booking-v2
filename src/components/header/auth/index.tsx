@@ -3,9 +3,9 @@ import default_country from "/images/default-country.svg";
 import default_user from "/images/default_user.png";
 import { Link, useNavigate } from "react-router-dom";
 import type { User } from "../../../types";
-import { useAuthStore } from "../../../store/authStore";
+import { useAuthStore } from "../../../store/auth.store";
 import Button from "../../ui/Button";
-import { useCurrencyStore } from "../../../store/currencyStore";
+import { useCurrencyStore } from "../../../store/currency.store";
 import Countries from "../countries";
 import Languages from "../../lang";
 
@@ -77,7 +77,7 @@ const LoginPart = ({ logout }: LoginPartProps) => {
                     </Link>
 
                     <button
-                        onClick={(_) => logout()}
+                        onClick={() => logout()}
                         aria-label="logout user from the app"
                         className="flex items-center gap-[10px] text-nowrap rounded-[5px] px-[10px] py-[15px] hover:bg-[#F0EDFF] hover:text-[var(--primary)] transition"
                     >

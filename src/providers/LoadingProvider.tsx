@@ -1,6 +1,6 @@
 import { createContext, useContext, type PropsWithChildren } from "react";
 import Loading from "../components/ui/Loading";
-import { useLoadingStore } from "../store/loadingStore";
+import { useLoadingStore } from "../store/loading.store";
 
 type LoadingContextType = {
     isLoading: boolean;

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import { useAuthStore } from "../store/authStore";
-import { useCurrencyStore } from "../store/currencyStore";
+import { useAuthStore } from "../store/auth.store";
+import { useCurrencyStore } from "../store/currency.store";
 
 export const useInitializeApp = () => {
     const { isAuthenticated, fetchProfile } = useAuthStore();
@@ -37,7 +37,7 @@ export const useInitializeApp = () => {
                 // Mark initialization as complete
                 initializationDone.current = true;
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error("Initialization failed:", error);
                 // Still mark as done to prevent infinite retries
                 initializationDone.current = true;

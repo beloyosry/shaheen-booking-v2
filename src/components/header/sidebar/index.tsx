@@ -2,7 +2,7 @@ import { Sidebar } from "primereact/sidebar";
 import logo from "/images/fill-logo.png";
 import default_user from "/images/default_user.png";
 import { Link } from "react-router-dom";
-import { useAuthStore } from "../../../store/authStore";
+import { useAuthStore } from "../../../store/auth.store";
 
 interface Props {
     visible: boolean;
@@ -52,7 +52,7 @@ export default function MobileSidebar({ visible, setVisible }: Props) {
                 />
 
                 <i
-                    onClick={(_) => setVisible(false)}
+                    onClick={() => setVisible(false)}
                     className="fa-solid fa-xmark text-[25px] cursor-pointer"
                 ></i>
             </div>
@@ -60,7 +60,7 @@ export default function MobileSidebar({ visible, setVisible }: Props) {
             <ul className="p-[1.25rem]">
                 <li className="mb-7">
                     <Link
-                        onClick={(_) => setVisible(false)}
+                        onClick={() => setVisible(false)}
                         to={"/planes"}
                         className="text-[#646464] font-bold text-[20px]"
                     >
@@ -70,7 +70,7 @@ export default function MobileSidebar({ visible, setVisible }: Props) {
 
                 <li className="mb-7">
                     <Link
-                        onClick={(_) => setVisible(false)}
+                        onClick={() => setVisible(false)}
                         to={"/profile"}
                         className="text-[#646464] font-bold text-[20px]"
                     >
@@ -80,7 +80,7 @@ export default function MobileSidebar({ visible, setVisible }: Props) {
 
                 <li className="mb-7">
                     <Link
-                        onClick={(_) => setVisible(false)}
+                        onClick={() => setVisible(false)}
                         to={""}
                         className="text-[#646464] font-bold text-[20px]"
                     >
@@ -91,7 +91,7 @@ export default function MobileSidebar({ visible, setVisible }: Props) {
 
             {!isAuthenticated ? (
                 <Link
-                    onClick={(_) => setVisible(false)}
+                    onClick={() => setVisible(false)}
                     to={"/login"}
                     className="absolute text-center bottom-5 w-[90%] left-[50%] translate-x-[-50%] text-[var(--primary)] text-[12.062px] border border-[var(--primary)] rounded-full py-4 font-medium"
                 >

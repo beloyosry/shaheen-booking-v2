@@ -1,10 +1,10 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { useAuthStore } from "../store/authStore";
+import { useAuthStore } from "../store/auth.store";
 import type { PropsWithChildren } from "react";
 import Loading from "../components/ui/Loading";
 import MainLayout from "../layout/MainLayout";
-import { useLoadingStore } from "../store/loadingStore";
+import { useLoadingStore } from "../store/loading.store";
 
 interface ProtectedRouteProps extends PropsWithChildren {
     role?: string[];

@@ -29,4 +29,10 @@ export const ENDPOINTS = {
         countriesInfo: () =>
             externalAxios.get("https://get.geojs.io/v1/ip/geo.json"),
     },
+    hotel: {
+        public: {
+            hotelsByCityCode: (data: { city_code: string; details: string }) =>
+                api.post("/hotel/tbo-codes", data),
+        },
+    },
 };

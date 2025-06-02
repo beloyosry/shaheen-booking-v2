@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLoadingStore } from "../store/loadingStore";
+import { useLoadingStore } from "../store/loading.store";
 import { usePopupStore } from "../store/pop-up.store";
 import api from "../lib/api";
 

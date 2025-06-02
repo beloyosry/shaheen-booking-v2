@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useHideDialog from "../../../hooks/useHideDialog";
-import { useCurrencyStore } from "../../../store/currencyStore";
+import { useCurrencyStore } from "../../../store/currency.store";
 import DataTableView from "../../dataTableView";
 
 type Props = {
@@ -111,7 +111,7 @@ export default function Countries({ visible, setVisible }: Props) {
 
         return (
             <div
-                onClick={(_) => handleClick(country)}
+                onClick={() => handleClick(country)}
                 className="p-4 border border-gray-200 rounded hover:bg-gray-100 cursor-pointer mb-3 flex items-center gap-[10px]"
                 style={{ minHeight: "60px", width: "100%" }}
             >

@@ -1,7 +1,7 @@
 import stroke from "../../assets/loading/stroke.svg";
 import plane from "../../assets/loading/plane.png";
 import logo from "/images/logo.png";
-import { useLoadingStore } from "../../store/loadingStore";
+import { useLoadingStore } from "../../store/loading.store";
 
 function Loading() {
     const { isLoading } = useLoadingStore();

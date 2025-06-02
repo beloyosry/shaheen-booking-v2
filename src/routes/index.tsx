@@ -6,7 +6,7 @@ import ProtectedRoute from "./ProtectedRoute";
 const MainLayout = lazy(() => import("../layout/MainLayout"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 const UnauthorizedPage = lazy(() => import("../pages/UnauthorizedPage"));
-const HomePage = lazy(() => import("../pages/public/HomePage"));
+const HomePage = lazy(() => import("../pages/public/home"));
 const HotelsPage = lazy(() => import("../pages/public/hotels"));
 const HotelDetailsPage = lazy(
     () => import("../pages/public/hotels/HotelDetailsPage")

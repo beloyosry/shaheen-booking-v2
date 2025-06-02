@@ -3,7 +3,7 @@ import { create } from "zustand";
 import type { AuthState } from "../types";
 import { ENDPOINTS } from "../lib/endpoints";
 import { getCookie, setSecureCookie, handleLogOut } from "../utils";
-import { useLoadingStore } from "./loadingStore";
+import { useLoadingStore } from "./loading.store";
 
 export const useAuthStore = create<AuthState>()(
     persist(

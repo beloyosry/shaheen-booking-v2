@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { useAuthStore } from "../../../store/authStore";
+import { useAuthStore } from "../../../store/auth.store";
 import LoginLinks from "./LoginLinks";
 
 export default function Links() {

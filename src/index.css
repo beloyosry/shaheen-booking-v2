@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 * {
-    padding: 0;
-    margin: 0;
+    /* padding: 0; */
+    /* margin: 0; */
     box-sizing: border-box;
     text-decoration: none;
     outline: none;
@@ -35,9 +35,14 @@ body::-webkit-scrollbar-thumb {
     box-shadow: 0px 0px 10px 10px var(--primary) !important;
 }
 
+button {
+    cursor: pointer;
+}
+
 .container {
-    margin: 0px auto;
-    padding: 0 16px;
+    margin-right: auto;
+    margin-left: auto;
+    /* padding: 0 16px; */
 }
 
 .grid-nogutter {
@@ -60,9 +65,6 @@ html {
 }
 
 label {
-    font-size: 15.272px;
-    margin-bottom: 5px;
-    display: block;
     cursor: pointer;
 }
 
