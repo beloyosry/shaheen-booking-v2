@@ -9,6 +9,7 @@ type Props = {
         SetStateAction<{ roomInfo: boolean; transferCountryLocation: boolean }>
     >;
     items?: Country[] | null;
+    country?: Country | null;
     children?: React.ReactNode;
     classNames?: string;
     panelClassNames?: string;
@@ -23,6 +24,7 @@ function DropDown({
     visible,
     setVisible,
     items,
+    country,
     children,
     classNames,
     panelClassNames,
@@ -50,6 +52,13 @@ function DropDown({
     };
 
     useHideDialog(handleHideDialog);
+
+    // Update active state when country changes
+    useEffect(() => {
+        if (country?.id) {
+            setActive(country.id);
+        }
+    }, [country]);
 
     useEffect(() => {
         const handleSearch = (value: string) => {
@@ -182,14 +191,12 @@ function DropDown({
                                                 <span className="font-bold text-[14px]">
                                                     {item?.name}
                                                 </span>
-                                                {item?.name && (
-                                                    <div className="flex items-center gap-1">
-                                                        <i className="fa-light fa-globe text-[10px] text-gray-500"></i>
-                                                        <span className="text-[11px] text-gray-500">
-                                                            {item?.name}
-                                                        </span>
-                                                    </div>
-                                                )}
+                                                <div className="flex items-center gap-1">
+                                                    <i className="fa-light fa-globe text-[10px] text-gray-500"></i>
+                                                    <span className="text-[11px] text-gray-500">
+                                                        {country?.name}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                     )

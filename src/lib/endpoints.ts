@@ -114,7 +114,7 @@ export const ENDPOINTS = {
         */
 
         getCities: (country_code: string) =>
-            api.post("/regions/cities", country_code),
+            api.post("/regions/cities", { country_code }),
         /* Response:
             {
                 "success": true,

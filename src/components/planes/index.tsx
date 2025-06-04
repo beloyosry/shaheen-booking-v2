@@ -12,7 +12,7 @@ import type { Country } from "../../types";
 
 function BookPlane() {
     const { setPopupVisible } = usePopupStore();
-    const { countries, selectedCountry } = useRegionStore();
+    const { countries, selectedCountry, cities } = useRegionStore();
     const { locale } = localeStore();
 
     const [tickets, setTicketType] = useState("round-trip");
@@ -20,8 +20,8 @@ function BookPlane() {
     const isOneWay = tickets === "one-way-ticket";
 
     const [originCountry, setOriginCountry] = useState<Country | null>({
-        name: "القاهرة",
-        code: "EG",
+        name: selectedCountry?.name || '',
+        code: selectedCountry?.code || '',
     });
 
     const [destinationCountry, setDestinationCountry] =
@@ -54,13 +54,30 @@ function BookPlane() {
         onSubmit: handleSubmit,
     });
 
+    // Update form values when selectedCountry changes
     useEffect(() => {
-        formik.setFieldValue("shaheen-currency", selectedCountry?.code);
-        formik.setFieldValue("market", selectedCountry?.code);
-        formik.setFieldValue("locale", locale || "ar-AE");
+        if (selectedCountry) {
+            formik.setFieldValue("shaheen-currency", selectedCountry.code);
+            formik.setFieldValue("market", selectedCountry.code);
+            formik.setFieldValue("locale", locale || "ar-AE");
+            
+            // Update originCountry state when selectedCountry changes
+            setOriginCountry({
+                name: selectedCountry.name,
+                code: selectedCountry.code,
+            });
+            
+            // Reset dropdown visibility states when country changes
+            setVisible(prev => ({
+                ...prev,
+                transferFrom: false,
+                transferTo: false,
+                travelLevel: false
+            }));
+        }
 
         return () => {};
-    }, [selectedCountry]);
+    }, [selectedCountry, locale]);
 
     const [visible, setVisible] = useState({
         travelLevel: false,
@@ -122,8 +139,9 @@ function BookPlane() {
             <div className="flex items-center flex-wrap lg:flex-nowrap gap-[18px] lg:gap-0">
                 {/* Create a wrapper function to adapt the setVisible prop */}
                 <DropDown
-                    items={countries}
-                    searchList={countries}
+                    items={cities}
+                    country={selectedCountry}
+                    searchList={cities}
                     formik={formik}
                     fieldname={"originEntityId"}
                     visible={visible?.transferFrom}

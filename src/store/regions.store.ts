@@ -63,8 +63,37 @@ export const useRegionStore = create<RegionState>()(
                 return `https://flagcdn.com/w80/${countryCode.toLowerCase()}.png`;
             },
 
-            setSelectedCountry: (country: Country) => {
-                set({ selectedCountry: country, countryCode: country.code });
+            setSelectedCountry: async (country: Country) => {
+                try {
+                    const setIsLoading =
+                        useLoadingStore.getState().setIsLoading;
+                    setIsLoading(true);
+
+                    // First update the selected country immediately to improve UI responsiveness
+                    set({
+                        selectedCountry: country,
+                        countryCode: country.code,
+                    });
+
+                    // Then fetch the cities for the selected country
+                    const response = await ENDPOINTS.regions.getCities(
+                        country.code
+                    );
+                    const cities = response?.data?.data || [];
+
+                    // Update the cities in the store
+                    set({ cities });
+
+                    setIsLoading(false);
+                } catch (error) {
+                    console.error("Error setting selected country:", error);
+                    const setIsLoading =
+                        useLoadingStore.getState().setIsLoading;
+                    setIsLoading(false);
+                    set({
+                        error: "Failed to fetch cities for selected country",
+                    });
+                }
             },
 
             initializeRegions: async () => {
@@ -109,6 +138,8 @@ export const useRegionStore = create<RegionState>()(
                                 selectedCountry.name
                             );
 
+                            await get().getCities(userCountryCode);
+
                             set({ selectedCountry });
 
                             set({ isInitialized: true });
@@ -128,6 +159,8 @@ export const useRegionStore = create<RegionState>()(
                             city: userCountryData.city || "",
                             currency: userCountryData.country_code,
                         };
+
+                        await get().getCities(userCountryData.country_code);
 
                         set({ selectedCountry });
 

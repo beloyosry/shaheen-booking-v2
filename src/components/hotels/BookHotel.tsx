@@ -9,20 +9,20 @@ import { format } from "date-fns";
 import { useFormik } from "formik";
 import RomesInfo from "./RomesInfo";
 import { useSetLocale } from "../../hooks/useLocale";
-import axios from "axios";
 import { useRegionStore } from "../../store/regions.store";
 import type { Country } from "../../types";
 
-
-
 function BookHotel() {
-    const { countries } = useRegionStore();
+    const { countries, selectedCountry, cities } = useRegionStore();
     const { getHotelCodesByCity } = useHotelsStore();
-    const { isLoading, setIsLoading } = useLoadingStore();
+    // const { isLoading, setIsLoading } = useLoadingStore();
     const pathname = useLocation();
     const navigate = useNavigate();
 
-    const [originCountry, setOriginCountry] = useState<any>(null);
+    const [originCountry, setOriginCountry] = useState<Country | null>({
+        name: selectedCountry!.name,
+        code: selectedCountry!.code,
+    });
 
     // useEffect(() => {
     //     const fetchCitiesForStoredCountry = async () => {
@@ -154,20 +154,20 @@ function BookHotel() {
     // Call the locale hook to set up Arabic locale
     useSetLocale();
 
-    useEffect(() => {
-        if (!originCountry || isLoading) return;
+    // useEffect(() => {
+    //     if (!originCountry || isLoading) return;
 
-        if (!originCountry.entityId && !originCountry.code) return;
+    //     if (!originCountry.id && !originCountry.code) return;
 
-        formik.setFieldValue(
-            "destinationEntityId",
-            originCountry.entityId || originCountry.code
-        );
+    //     formik.setFieldValue(
+    //         "destinationEntityId",
+    //         originCountry.id || originCountry.code
+    //     );
 
-        if (originCountry.code) {
-            getHotelCodesByCity(originCountry.code);
-        }
-    }, [originCountry]);
+    //     if (originCountry.code) {
+    //         getHotelCodesByCity(originCountry.code);
+    //     }
+    // }, [originCountry]);
 
     return (
         <form onSubmit={formik.handleSubmit} className="py-2">
@@ -181,8 +181,9 @@ function BookHotel() {
 
             <div className="flex items-center flex-wrap lg:flex-nowrap gap-[18px] lg:gap-0">
                 <DropDown
-                    items={countries}
-                    searchList={countries}
+                    items={cities}
+                    country={selectedCountry}
+                    searchList={cities}
                     visible={visible?.transferCountryLocation}
                     setVisible={setVisible}
                     formik={formik}
