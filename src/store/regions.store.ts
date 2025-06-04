@@ -111,36 +111,36 @@ export const useRegionStore = create<RegionState>()(
                     const userCountryData = await get().getUserCountry();
 
                     // Step 2: Then get all countries list
-                    await get().getCountries();
+                    await get().getRegions();
 
-                    const countries = get().countries;
-                    let selectedCountry = null;
+                    const regions = get().regions;
+                    let selectedRegion = null;
 
                     // Step 3: Try to find the user's country in the countries list
                     if (userCountryData && userCountryData.country_code) {
                         const userCountryCode = userCountryData.country_code;
 
                         // Try to find exact match by country code
-                        const userCountry = countries.find(
-                            (country) => country.code === userCountryCode
+                        const userRegion = regions.find(
+                            (region) => region.code === userCountryCode
                         );
 
-                        if (userCountry) {
+                        if (userRegion) {
                             // Add flag and city information
-                            selectedCountry = {
-                                ...userCountry,
-                                flag: get().getCountryFlag(userCountry.code),
+                            selectedRegion = {
+                                ...userRegion,
+                                flag: get().getCountryFlag(userRegion.code),
                                 city: userCountryData.city || "",
                                 currency: userCountryData.country_code || "",
                             };
                             console.log(
                                 "Found matching country in list:",
-                                selectedCountry.name
+                                selectedRegion.name
                             );
 
                             await get().getCities(userCountryCode);
 
-                            set({ selectedCountry });
+                            set({ selectedCountry: selectedRegion });
 
                             set({ isInitialized: true });
                             return;
@@ -148,9 +148,9 @@ export const useRegionStore = create<RegionState>()(
                     }
 
                     // If we still don't have a selected country but we have geolocation data, create a country from it
-                    if (!selectedCountry && userCountryData) {
+                    if (!selectedRegion && userCountryData) {
                         // Create a country directly from geolocation data
-                        selectedCountry = {
+                        selectedRegion = {
                             code: userCountryData.country_code,
                             name: userCountryData.country, // The API returns the country name
                             flag: get().getCountryFlag(
@@ -162,7 +162,7 @@ export const useRegionStore = create<RegionState>()(
 
                         await get().getCities(userCountryData.country_code);
 
-                        set({ selectedCountry });
+                        set({ selectedCountry: selectedRegion });
 
                         set({ isInitialized: true });
                         return;
@@ -201,7 +201,7 @@ export const useRegionStore = create<RegionState>()(
                     const format = response?.data?.data?.items?.map(
                         (item: Region) => {
                             const newFormat = {
-                                entityId: item?.id,
+                                id: item?.id,
                                 code: item?.code,
                                 name: item?.name,
                                 country: item?.country,

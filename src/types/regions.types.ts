@@ -25,10 +25,7 @@ export type Country = {
     currency?: string;
 };
 
-export type Region = {
-    id: string;
-    code: string;
-    name: string;
+export type Region = City & {
     country: Country;
 };
 
