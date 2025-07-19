@@ -10,6 +10,7 @@ type Props = {
     >;
     items?: Country[] | null;
     country?: Country | null;
+    defaultSelected?: Country | null;
     children?: React.ReactNode;
     classNames?: string;
     panelClassNames?: string;
@@ -25,6 +26,7 @@ function DropDown({
     setVisible,
     items,
     country,
+    defaultSelected,
     children,
     classNames,
     panelClassNames,
@@ -57,6 +59,9 @@ function DropDown({
     useEffect(() => {
         if (country?.id) {
             setActive(country.id);
+        }
+        if (defaultSelected?.id) {
+            setActive(defaultSelected.id);
         }
     }, [country]);
 

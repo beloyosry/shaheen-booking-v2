@@ -12,7 +12,7 @@ import type { Country } from "../../types";
 
 function BookPlane() {
     const { setPopupVisible } = usePopupStore();
-    const { countries, selectedCountry, cities } = useRegionStore();
+    const { countries, selectedCountry, cities, regions } = useRegionStore();
     const { locale } = localeStore();
 
     const [tickets, setTicketType] = useState("round-trip");
@@ -20,8 +20,8 @@ function BookPlane() {
     const isOneWay = tickets === "one-way-ticket";
 
     const [originCountry, setOriginCountry] = useState<Country | null>({
-        name: selectedCountry?.name || '',
-        code: selectedCountry?.code || '',
+        name: selectedCountry?.name || "",
+        code: selectedCountry?.code || "",
     });
 
     const [destinationCountry, setDestinationCountry] =
@@ -60,19 +60,19 @@ function BookPlane() {
             formik.setFieldValue("shaheen-currency", selectedCountry.code);
             formik.setFieldValue("market", selectedCountry.code);
             formik.setFieldValue("locale", locale || "ar-AE");
-            
+
             // Update originCountry state when selectedCountry changes
             setOriginCountry({
                 name: selectedCountry.name,
                 code: selectedCountry.code,
             });
-            
+
             // Reset dropdown visibility states when country changes
-            setVisible(prev => ({
+            setVisible((prev) => ({
                 ...prev,
                 transferFrom: false,
                 transferTo: false,
-                travelLevel: false
+                travelLevel: false,
             }));
         }
 
@@ -139,9 +139,9 @@ function BookPlane() {
             <div className="flex items-center flex-wrap lg:flex-nowrap gap-[18px] lg:gap-0">
                 {/* Create a wrapper function to adapt the setVisible prop */}
                 <DropDown
-                    items={cities}
-                    country={selectedCountry}
-                    searchList={cities}
+                    items={regions}
+                    defaultSelected={selectedCountry}
+                    searchList={regions}
                     formik={formik}
                     fieldname={"originEntityId"}
                     visible={visible?.transferFrom}

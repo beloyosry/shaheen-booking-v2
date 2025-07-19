@@ -139,7 +139,10 @@ export const ENDPOINTS = {
     hotel: {
         public: {
             hotelsByCityCode: (data: { city_code: string; details: string }) =>
-                api.post("/hotel/tbo-codes", data),
+                api.post("/hotel/tbo-codes", {
+                    city_code: data.city_code,
+                    detailes: false,
+                }),
         },
     },
 };

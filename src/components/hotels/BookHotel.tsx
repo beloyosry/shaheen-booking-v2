@@ -13,7 +13,7 @@ import { useRegionStore } from "../../store/regions.store";
 import type { Country } from "../../types";
 
 function BookHotel() {
-    const { countries, selectedCountry, cities } = useRegionStore();
+    const { countries, selectedCountry, cities, regions } = useRegionStore();
     const { getHotelCodesByCity } = useHotelsStore();
     // const { isLoading, setIsLoading } = useLoadingStore();
     const pathname = useLocation();
@@ -181,9 +181,9 @@ function BookHotel() {
 
             <div className="flex items-center flex-wrap lg:flex-nowrap gap-[18px] lg:gap-0">
                 <DropDown
-                    items={cities}
-                    country={selectedCountry}
-                    searchList={cities}
+                    items={regions}
+                    defaultSelected={originCountry}
+                    searchList={regions}
                     visible={visible?.transferCountryLocation}
                     setVisible={setVisible}
                     formik={formik}

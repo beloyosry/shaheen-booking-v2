@@ -44,6 +44,7 @@ export type RegionState = {
     selectedCountry: Country | null;
     error: string | null;
     isInitialized: boolean;
+    isInitializing: boolean; // Flag to track initialization in progress
     isLoadingCountries: boolean;
     isLoadingUserCountry: boolean;
 
