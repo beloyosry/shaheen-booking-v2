@@ -39,7 +39,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="bg-[var(--secondary)] py-14 pb-8 relative">
+        <footer className="bg-secondary-500 py-14 pb-8 relative">
             <div className="container relative z-10">
                 <div className="flex flex-col gap-3 lg:gap-7 sm:hidden border-b border-b-[#ffffff42] pb-3 mb-3">
                     <Link to={"/"}>

@@ -25,7 +25,7 @@ export default function MobileSidebar({ visible, setVisible }: Props) {
                         e.stopPropagation();
                         setVisible((prev) => !prev);
                     }}
-                    className="w-[42px] h-[42px] p-2 shadow-sm border border-[var(--secondary)] rounded-full flex items-center justify-center cursor-pointer"
+                    className="w-[42px] h-[42px] p-2 shadow-sm border border-secondary-500 rounded-full flex items-center justify-center cursor-pointer"
                 >
                     {/* <img
                         src={user?.img || default_user}
@@ -93,7 +93,7 @@ export default function MobileSidebar({ visible, setVisible }: Props) {
                 <Link
                     onClick={() => setVisible(false)}
                     to={"/login"}
-                    className="absolute text-center bottom-5 w-[90%] left-[50%] translate-x-[-50%] text-[var(--primary)] text-[12.062px] border border-[var(--primary)] rounded-full py-4 font-medium"
+                    className="absolute text-center bottom-5 w-[90%] left-[50%] translate-x-[-50%] text-primary-500 text-[12.062px] border border-primary-500 rounded-full py-4 font-medium"
                 >
                     سجل الدخول
                 </Link>

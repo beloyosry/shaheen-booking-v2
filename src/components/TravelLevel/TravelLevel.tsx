@@ -49,7 +49,7 @@ export default function TravelLevel({ visible, setVisible, formik }: Props) {
             } z-[200] top-24 rounded-[16px] min-w-[285px] transition w-full bg-white border-[var(--secondary)]`}
             style={{ boxShadow: "0px 50px 40px 0px rgba(115, 115, 115, 0.12)" }}
         >
-            <h2 className="bg-[#c5baff19] text-[var(--secondary)] text-[15px] w-full py-2 text-center">
+            <h2 className="bg-[#c5baff19] text-primary-500 text-[15px] w-full py-2 text-center">
                 الركاب و درجة الرحلة
             </h2>
 
@@ -61,7 +61,7 @@ export default function TravelLevel({ visible, setVisible, formik }: Props) {
                 <AccordionTab
                     headerStyle={{ direction: "rtl !important" }}
                     header={
-                        <p className="text-[var(--secondary)] text-[14px]">
+                        <p className="text-primary-500 text-[14px]">
                             الركاب
                         </p>
                     }
@@ -116,7 +116,7 @@ export default function TravelLevel({ visible, setVisible, formik }: Props) {
 
                 <AccordionTab
                     header={
-                        <p className="text-[var(--secondary)] text-[14px]">
+                        <p className="text-primary-500 text-[14px]">
                             درجة الرحلة
                         </p>
                     }

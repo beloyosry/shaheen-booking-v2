@@ -98,7 +98,7 @@ function DropDown({
                             visible
                                 ? "scale-100 right-0"
                                 : "scale-0 right-[500px]"
-                        } min-w-[285px] z-[200] top-24 rounded-[6px] h-[300px] max-h-[300px] left-0 transition w-full bg-white border border-[var(--secondary)] ${
+                        } min-w-[285px] z-[200] top-24 rounded-[6px] h-[300px] max-h-[300px] left-0 transition w-full bg-white border border-secondary-500 ${
                             panelClassNames || ""
                         }`}
                         style={{

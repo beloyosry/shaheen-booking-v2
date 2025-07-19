@@ -1,109 +1,270 @@
 import { useState } from "react";
-import hotel from "/images/hotel.svg";
-import Hotels from "../../hotels";
-import BookHotel from "../../hotels/BookHotel";
-import BookPlane from "../../planes";
+
+const BookingButton = ({
+    activeBtn,
+    setActiveBtn,
+    title,
+    icon,
+    btnValue,
+    btnClassNames,
+}: {
+    activeBtn: number;
+    setActiveBtn: (value: number) => void;
+    title: string;
+    icon: React.ReactNode;
+    btnValue: number;
+    btnClassNames?: string;
+}) => {
+    const isActive = activeBtn === btnValue;
+
+    return (
+        <button
+            onClick={() => setActiveBtn(btnValue)}
+            className={`flex items-center justify-center px-4 py-2 ${btnClassNames} ${
+                isActive
+                    ? "bg-primary-500 text-white"
+                    : "bg-white text-gray-700"
+            } `}
+        >
+            {/* icon */}
+            <span className="mr-2">{icon}</span>
+
+            {/* Button text */}
+            <span className="font-medium">{title}</span>
+        </button>
+    );
+};
+
+// Trip type options for flights
+const TripOption = ({
+    label,
+    isActive,
+    onClick,
+}: {
+    label: string;
+    isActive: boolean;
+    onClick: () => void;
+}) => (
+    <div
+        onClick={onClick}
+        className={`flex items-center gap-2 cursor-pointer ${
+            isActive ? "text-secondary-500" : "text-gray-400"
+        }`}
+    >
+        <div className="flex flex-col items-center">
+            <span className="text-sm">{label}</span>
+            {isActive && (
+                <div className="w-1.5 h-1.5 bg-secondary-500 rounded-full m-auto"></div>
+            )}
+        </div>
+    </div>
+);
+
+function InputField({
+    placeholder,
+    type,
+    icon,
+}: {
+    placeholder: string;
+    type: string;
+    icon: React.ReactNode;
+}) {
+    return (
+        <div className="flex items-center gap-2 w-[200px] border border-gray-200 rounded-3xl p-3">
+            {icon}
+            <div>
+                <div className="text-xs text-gray-500">{placeholder}</div>
+                <input type={type} placeholder={placeholder} />
+            </div>
+        </div>
+    );
+}
 
 function BookingSearch() {
     const [activeBtn, setActiveBtn] = useState(0);
+    const [tripType, setTripType] = useState("roundtrip");
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [selectedOption, setSelectedOption] = useState("Economy");
 
-    return (
-        <section className="lg:h-fit sm:mb-[118px] mt-[-167px] relative z-[100] px-3 sm:px-0">
-            {/* Container for buttons */}
-            <div className="p-2 sm:p-4 container h-[57px] flex items-center justify-center lg:justify-start gap-[7px] mb-[10px]">
-                {/* Plane booking button */}
-                <button
-                    onClick={() => setActiveBtn(0)}
-                    className="rounded-[12.167px] overflow-hidden relative p-[7.604px] h-[56.271px] leading-[56.271px] gap-x-[16.729px] w-[48%] sm:w-[190.104px] flex items-center"
-                    style={{
-                        background: "rgba(255, 255, 255, 0.30)",
-                        backdropFilter: "blur(1.5208332538604736px)",
-                    }}
-                >
-                    {/* Plane icon */}
-                    <i
-                        className={` relative z-20 sm:text-[30px] ${
-                            activeBtn === 0
-                                ? "text-[#8672F3] rotate-to-left fa-solid fa-plane fa-solid fa-plane"
-                                : "text-white fa-thin fa-plane rotate-to-right"
-                        }`}
-                    ></i>
+    const dropDownListOptions = [
+        { label: "Economy", value: "economy" },
+        { label: "Premium Economy", value: "premium economy" },
+        { label: "Business", value: "business" },
+        { label: "First Class", value: "first class" },
+    ];
+    const handleOptionClick = (option: string) => {
+        setSelectedOption(option);
+        setShowDropdown(false);
+    };
+    // Flight search form component
+    const FlightSearchForm = () => (
+        <div className="p-4">
+            <div className="flex justify-start gap-4 mb-4">
+                <TripOption
+                    label="Round-trip"
+                    isActive={tripType === "roundtrip"}
+                    onClick={() => setTripType("roundtrip")}
+                />
+                <TripOption
+                    label="One-Way"
+                    isActive={tripType === "oneway"}
+                    onClick={() => setTripType("oneway")}
+                />
+                <TripOption
+                    label="Multi-City"
+                    isActive={tripType === "multicity"}
+                    onClick={() => setTripType("multicity")}
+                />
 
-                    {/* Highlight for active button */}
-                    <div
-                        className={`${
-                            activeBtn === 0 ? "right-[-49%]" : "right-[-91%]"
-                        } absolute w-full z-10 transition h-[78px] bg-[#cac2f9] rounded-full border-[10px] ${
-                            activeBtn === 1 ? "!border-l-[13px]" : ""
-                        } border-[#eae7fd]`}
-                    ></div>
-
-                    {/* Button text */}
-                    <span
-                        className={`${
-                            activeBtn === 0 ? "text-[#8672F3]" : "text-white"
-                        } transition relative z-20 font-bold text-[12px] sm:text-[18.25px]`}
+                <div className="relative">
+                    <button
+                        onClick={() => setShowDropdown(!showDropdown)}
+                        className="flex items-center gap-1 bg-blue-50 text-blue-600 px-3 py-1 rounded-md"
+                        id="dropdown-button"
+                        aria-expanded="false"
+                        aria-haspopup="true"
                     >
-                        حجز طائرة
-                    </span>
-                </button>
+                        <span className="text-xs">{selectedOption}</span>
+                        <span className="text-xs">▼</span>
+                    </button>
+                    {showDropdown && (
+                        <ul
+                            className="absolute top-10 left-1/2 -translate-x-1/2 w-full bg-white shadow-lg py-1 rounded-xl"
+                            aria-labelledby="dropdown-button"
+                            role="menu"
+                        >
+                            {dropDownListOptions.map((option) => (
+                                <li
+                                    key={option.value}
+                                    onClick={() =>
+                                        handleOptionClick(option.label)
+                                    }
+                                    className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                    role="menuitem"
+                                >
+                                    {option.label}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            </div>
 
-                {/* Hotel booking button */}
-                <button
-                    onClick={() => setActiveBtn(1)}
-                    className="rounded-[12.167px] relative overflow-hidden p-[7.604px] h-[56.271px] leading-[56.271px] gap-x-[16.729px] w-[48%] sm:w-[190.104px] flex items-center"
-                    style={{
-                        background: "rgba(255, 255, 255, 0.30)",
-                        backdropFilter: "blur(1.5208332538604736px)",
-                    }}
-                >
-                    {/* Hotel icon */}
-                    <img
-                        src={hotel}
-                        className="w-fit ms-4 relative z-20"
-                        loading="lazy"
-                        alt=""
+            <div className="w-full flex justify-between items-center gap-4">
+                <div className="relative flex items-center gap-8">
+                    <InputField
+                        placeholder="Leaving From?"
+                        type="text"
+                        icon={
+                            <i className="far fa-location-dot text-primary-500" />
+                        }
                     />
 
-                    {/* Highlight for active button */}
-                    <div
-                        className={`${
-                            activeBtn === 1 ? "right-[-54%]" : "right-[-91%]"
-                        } absolute w-full z-10 transition h-[78px] bg-[#cac2f9] rounded-full border-[10px] ${
-                            activeBtn === 0 ? "!border-l-[13px]" : ""
-                        } border-[#eae7fd]`}
-                    ></div>
+                    <div className="absolute left-[45%] flex flex-col justify-center items-center bg-white w-10 h-10 rounded-full">
+                        <div className="flex items-center gap-2 text-primary-500">
+                            <i className="far fa-arrow-left"></i>
+                        </div>
+                        <div className="flex items-center gap-2 text-primary-500">
+                            <i className="far fa-arrow-right"></i>
+                        </div>
+                    </div>
 
-                    {/* Button text */}
-                    <span
-                        className={`${
-                            activeBtn === 1 ? "text-[#8672F3]" : "text-white"
-                        } transition font-bold text-[12px] sm:text-[18.25px] relative z-20`}
-                    >
-                        احجز فندق
-                    </span>
+                    <InputField
+                        placeholder="Going To?"
+                        type="text"
+                        icon={
+                            <i className="far fa-location-dot text-primary-500" />
+                        }
+                    />
+                </div>
+
+                <InputField
+                    placeholder="Dates"
+                    type="text"
+                    icon={
+                        <i className="far fa-calendar-days text-primary-500" />
+                    }
+                />
+
+                <InputField
+                    placeholder="Travelers"
+                    type="text"
+                    icon={<i className="far fa-user text-primary-500" />}
+                />
+                <button className="bg-primary-500 text-white px-8 py-3 rounded-2xl font-medium">
+                    Search
                 </button>
+            </div>
+        </div>
+    );
+
+    // Hotel search form component
+    const HotelSearchForm = () => (
+        <div className="p-4">
+            <div className="w-full flex justify-between items-center gap-4">
+                <InputField
+                    placeholder="Where to?"
+                    type="text"
+                    icon={
+                        <i className="far fa-location-dot text-primary-500" />
+                    }
+                />
+
+                <InputField
+                    placeholder="Dates"
+                    type="text"
+                    icon={
+                        <i className="far fa-calendar-days text-primary-500" />
+                    }
+                />
+
+                <InputField
+                    placeholder="Travelers"
+                    type="text"
+                    icon={<i className="far fa-user text-primary-500" />}
+                />
+
+                <button className="bg-primary-500 text-white px-8 py-3 rounded-2xl font-medium">
+                    Search
+                </button>
+            </div>
+        </div>
+    );
+
+    return (
+        <div className="w-full lg:h-fit sm:mb-[118px] relative z-[100] px-3 mt-10 sm:px-0">
+            {/* Container for tabs */}
+            <div className="flex w-fit bg-white rounded-tl-lg rounded-tr-4xl rounded-bl-lg">
+                {/* Stays tab */}
+                <BookingButton
+                    activeBtn={activeBtn}
+                    setActiveBtn={setActiveBtn}
+                    btnValue={1}
+                    title="Stays"
+                    icon={<span className="text-lg">🏨</span>}
+                    btnClassNames="rounded-tl-lg rounded-br-2xl"
+                />
+
+                {/* Flights tab */}
+                <BookingButton
+                    activeBtn={activeBtn}
+                    setActiveBtn={setActiveBtn}
+                    btnValue={0}
+                    title="Flights"
+                    icon={<span className="text-lg">✈️</span>}
+                    btnClassNames="rounded-tr-4xl rounded-bl-2xl"
+                />
             </div>
 
             {/* Container for the selected booking component */}
-            <div
-                className="p-2 sm:p-4 container lg:h-full sm:px-[18px] bg-white rounded-[19.01px]"
-                style={{
-                    boxShadow: "0px 15.208px 38.021px 0px rgba(0, 0, 0, 0.07)",
-                }}
-            >
-                {/* Render BookHotel component if activeBtn is 0 */}
-                {activeBtn === 1 ? (
-                    <>
-                        <BookHotel />
-                        <Hotels />
-                    </>
-                ) : null}
+            <div className="bg-white rounded-b-3xl rounded-tr-3xl shadow-md">
+                {/* Render Hotel search if activeBtn is 1 */}
+                {activeBtn === 1 ? <HotelSearchForm /> : null}
 
-                {/* Render BookPlane component if activeBtn is 1 */}
-                {activeBtn === 0 ? <BookPlane /> : null}
+                {/* Render Flight search if activeBtn is 0 */}
+                {activeBtn === 0 ? <FlightSearchForm /> : null}
             </div>
-        </section>
+        </div>
     );
 }
 

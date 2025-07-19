@@ -61,7 +61,7 @@ function Recommendation() {
             <div className="mr-auto px-[16px] relative me-[0] pe-0 max-w-[calc(100%-16px)] sm:max-w-[90%] overflow-hidden pb-32 py-4">
                 <Link
                     to={"/blogs"}
-                    className="z-[200] relative text-[20px] text-[var(--secondary)] font-bold my-5 flex items-center gap-3"
+                    className="z-[200] relative text-[20px] text-primary-500 font-bold my-5 flex items-center gap-3"
                 >
                     <span>عرض المزيد</span>
 

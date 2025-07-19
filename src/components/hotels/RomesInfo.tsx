@@ -301,10 +301,10 @@ export default function RomesInfo({ visible, formik, setVisible }: Props) {
         <div
             className={`absolute ${
                 visible ? "scale-100 left-0" : "scale-0 left-[500px]"
-            } top-24 px-3 rounded-[16px] z-[200] left-0 transition w-full bg-white border border-[var(--secondary)]`}
+            } top-24 px-3 rounded-[16px] z-[200] left-0 transition w-full bg-white border border-primary-500`}
             style={{ boxShadow: "0px 50px 40px 0px rgba(115, 115, 115, 0.12)" }}
         >
-            <h2 className="bg-[#c5baff19] text-[var(--secondary)] text-[15px] w-full py-2 text-center">
+            <h2 className="bg-[#c5baff19] text-primary-500 text-[15px] w-full py-2 text-center">
                 غرف و الاشخاص
             </h2>
 

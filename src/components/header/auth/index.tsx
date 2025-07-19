@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import default_country from "/images/default-country.svg";
 import default_user from "/images/default_user.png";
 import { Link, useNavigate } from "react-router-dom";
 import type { User } from "../../../types";
 import { useAuthStore } from "../../../store/auth.store";
 import Button from "../../ui/Button";
-import Countries from "../countries";
 import Languages from "../../lang";
-import { useRegionStore } from "../../../store/regions.store";
 import { localeStore } from "../../../store/locale.store";
 
 type LoginPartProps = {
@@ -41,7 +38,7 @@ const LoginPart = ({ logout }: LoginPartProps) => {
                         e.stopPropagation();
                         setVisible((prev) => !prev);
                     }}
-                    className="w-[42px] h-[42px] p-2 shadow-sm border border-[var(--secondary)] rounded-full flex items-center justify-center cursor-pointer"
+                    className="w-[42px] h-[42px] p-2 shadow-sm border border-secondary-500 rounded-full flex items-center justify-center cursor-pointer"
                 >
                     {/* <img
                         src={user?.img || default_user}
@@ -70,7 +67,7 @@ const LoginPart = ({ logout }: LoginPartProps) => {
                     <Link
                         to={"/profile"}
                         aria-label="navigate to user profile"
-                        className="flex items-center gap-[10px] text-nowrap rounded-[5px] px-[10px] py-[15px] hover:bg-[#F0EDFF] hover:text-[var(--primary)] transition"
+                        className="flex items-center gap-[10px] text-nowrap rounded-[5px] px-[10px] py-[15px] hover:bg-[#F0EDFF] hover:text-primary-500 transition"
                     >
                         <i className="fa-duotone fa-user-secret"></i>
 
@@ -80,7 +77,7 @@ const LoginPart = ({ logout }: LoginPartProps) => {
                     <button
                         onClick={() => logout()}
                         aria-label="logout user from the app"
-                        className="flex items-center gap-[10px] text-nowrap rounded-[5px] px-[10px] py-[15px] hover:bg-[#F0EDFF] hover:text-[var(--primary)] transition"
+                        className="flex items-center gap-[10px] text-nowrap rounded-[5px] px-[10px] py-[15px] hover:bg-[#F0EDFF] hover:text-primary-500 transition"
                     >
                         <i className="fa-solid fa-arrow-up-left-from-circle"></i>
 
@@ -97,74 +94,49 @@ const Guest = () => {
 
     return (
         <Button
-            title={"تسجيل / دخول"}
+            title="Sign Up"
             onClick={() => navigate("/login")}
-            classNames={"hidden sm:inline-block"}
+            classNames={"hidden sm:inline-block bg-primary-500 text-white px-5"}
         />
     );
 };
 
 export default function HeaderAuth({ setVisible }: HeaderProps) {
     const { user, isAuthenticated, logout } = useAuthStore();
-    const { selectedCountry } = useRegionStore();
     const { locale } = localeStore();
-    const [visible, setCountriesVisible] = useState(false);
     const [langVisible, setLangVisible] = useState(false);
 
     return (
         <div className="flex items-center gap-2">
-            <div className="w-[30px] sm:w-[42px] h-[30px] sm:h-[42px] sm:p-2 shadow-sm border border-[var(--secondary)] rounded-full flex items-center justify-center">
-                <p className="text-[7.247px] sm:text-[12.062px] font-medium min-w-[30px] sm:min-w-[34px] h-[30px] sm:h-[34px] rounded-full flex justify-center items-center bg-white">
-                    {selectedCountry?.code || "SAR"}
-                </p>
-            </div>
-            <div
+            <Button
+                title={
+                    locale.split("-")[0].toUpperCase() === "AR"
+                        ? "ARABIC"
+                        : locale.split("-")[0].toUpperCase()
+                }
                 onClick={(e) => {
                     e.stopPropagation();
                     setLangVisible((perv) => !perv);
-                    setCountriesVisible(false);
                 }}
-                className="w-[30px] sm:w-[42px] h-[30px] sm:h-[42px] sm:p-2 shadow-sm border border-[var(--secondary)] rounded-full flex items-center justify-center cursor-pointer"
-            >
-                <p className="text-[7.247px] sm:text-[12.062px] font-medium min-w-[30px] sm:min-w-[34px] h-[30px] sm:h-[34px] rounded-full flex justify-center items-center bg-white">
-                    {locale.split("-")[0].toUpperCase()}
-                </p>
-            </div>
-
-            <div
-                onClick={(e) => {
-                    setCountriesVisible((perv) => !perv);
-                    e.stopPropagation();
-                    setLangVisible(false);
-                }}
-                className="w-[30px] sm:w-[42px] h-[30px] p-[2px] sm:h-[42px] shadow-sm border border-[var(--secondary)] rounded-full flex items-center justify-center cursor-pointer"
-            >
-                <img
-                    src={selectedCountry?.flag || default_country}
-                    loading="lazy"
-                    onError={(e) => (e.currentTarget.src = default_country)}
-                    className="w-full h-full rounded-full object-cover"
-                    alt=""
-                />
-            </div>
-
-            {isAuthenticated ? null : <Guest />}
+                classNames="bg-black text-white"
+            />
             {isAuthenticated ? (
                 <LoginPart
                     user={user}
                     logout={logout}
                     setSidebarVisible={setVisible}
                 />
-            ) : null}
+            ) : (
+                <Guest />
+            )}
 
+            {/* Mobile menu */}
             <div className="min-w-[30px] h-[30px] grid sm:hidden place-content-center">
                 <i
                     onClick={() => setVisible((prev) => !prev)}
                     className="fa-solid fa-bars text-[25px] text-white cursor-pointer"
                 ></i>
             </div>
-
-            <Countries visible={visible} setVisible={setCountriesVisible} />
 
             <Languages visible={langVisible} setVisible={setLangVisible} />
         </div>

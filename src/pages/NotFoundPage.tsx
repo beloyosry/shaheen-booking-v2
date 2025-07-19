@@ -7,20 +7,20 @@ export default function NotFoundPage() {
             style={{ fontFamily: ' "Inter", sans-serif' }}
         >
             <h1>
-                <span className="text-[var(--secondary)] text-[128px] font-[800]">
+                <span className="text-primary-500 text-[128px] font-[800]">
                     4
                 </span>
-                <span className="text-[var(--secondary)] text-[128px] font-[800] zero-letter">
+                <span className="text-primary-500 text-[128px] font-[800] zero-letter">
                     0
                 </span>
-                <span className="text-[var(--secondary)] text-[128px] font-[800]">
+                <span className="text-primary-500 text-[128px] font-[800]">
                     4
                 </span>
             </h1>
 
             <h2 className="text-[35px] font-[600] mb-8">
                 Sorry, Page not{" "}
-                <span className="text-[var(--secondary)]">Found</span>
+                <span className="text-primary-500">Found</span>
             </h2>
 
             <Link

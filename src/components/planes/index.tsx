@@ -186,7 +186,7 @@ function BookPlane() {
                         className="flex items-center justify-between cursor-pointer"
                     >
                         <div className="flex gap-[6px] max-w-[80%]">
-                            <i className="fa-regular fa-location-dot text-[var(--primary)] text-[20px]"></i>
+                            <i className="fa-regular fa-location-dot text-primary-500 text-[20px]"></i>
 
                             <div className="w-full">
                                 <p
@@ -215,8 +215,8 @@ function BookPlane() {
                             "0px 0px 22.812px 0px rgba(74, 43, 237, 0.38)",
                     }}
                 >
-                    <i className="fa-solid fa-arrow-up lg:fa-arrow-right text-[var(--primary)] text-[10px]"></i>
-                    <i className="fa-thin fa-arrow-down lg:fa-arrow-left text-[var(--primary)] text-[10px]"></i>
+                    <i className="fa-solid fa-arrow-up lg:fa-arrow-right text-primary-500 text-[10px]"></i>
+                    <i className="fa-thin fa-arrow-down lg:fa-arrow-left text-primary-500 text-[10px]"></i>
                 </div>
 
                 <DropDown
@@ -265,7 +265,7 @@ function BookPlane() {
                         className="flex items-center justify-between cursor-pointer"
                     >
                         <div className="flex gap-[6px] max-w-[80%]">
-                            <i className="fa-regular fa-location-dot text-[var(--primary)] sm:text-[20px]"></i>
+                            <i className="fa-regular fa-location-dot text-primary-500 sm:text-[20px]"></i>
 
                             <div className="w-full">
                                 <p
@@ -368,7 +368,7 @@ function BookPlane() {
                         className="flex items-center justify-between cursor-pointer"
                     >
                         <div className="flex gap-[6px]">
-                            <i className="fa-light fa-users-medical text-[var(--primary)] text-[20px]"></i>
+                            <i className="fa-light fa-users-medical text-primary-500 text-[20px]"></i>
 
                             <p className="text-[12px] sm:text-[13.208px] font-bold mb-1">
                                 شخص 1 / سياحية

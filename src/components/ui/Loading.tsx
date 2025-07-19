@@ -9,7 +9,7 @@ function Loading() {
         <div
             className={`fixed ${
                 !isLoading ? "opacity-0 !z-[-1]" : "opacity-100 z-[1000]"
-            } w-full bg-[var(--primary)] h-[100vh]`}
+            } w-full bg-primary-500 h-[100vh]`}
         >
             <div
                 className="absolute left-0 bottom-0 w-[169px] h-[169px] rounded-full bg-white"

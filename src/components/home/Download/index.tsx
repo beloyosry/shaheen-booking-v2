@@ -39,7 +39,7 @@ function Download() {
     return (
         <section className="relative mb-[50px] px-4 sm:px-0 sm:mb-[200px]">
             {/* Main container */}
-            <div className="lg:w-[850px] z-10 m-auto sm:px-10 relative bg-[var(--secondary)] rounded-[15.739px] md:h-[235.976px] flex flex-wrap md:flex-nowrap items-center justify-end">
+            <div className="lg:w-[850px] z-10 m-auto sm:px-10 relative bg-secondary-500 rounded-[15.739px] md:h-[235.976px] flex flex-wrap md:flex-nowrap items-center justify-end">
                 {/* Mobile screens for smaller screens */}
                 <div className="flex items-center justify-around mb-10 mt-[-100px] gap-x-3 w-full md:hidden">
                     <img

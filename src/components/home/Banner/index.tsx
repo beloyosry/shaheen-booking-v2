@@ -38,7 +38,7 @@ function Banner() {
             className="mb-[50px] sm:mb-[100px] mt-[100px] sm:mt-[200px]"
         >
             <div className="container relative">
-                <div className="lg:h-[285px] bg-[var(--secondary)] rounded-[19.01px] p-2 sm:p-5 flex flex-col justify-center">
+                <div className="lg:h-[285px] bg-secondary-500 rounded-[19.01px] p-2 sm:p-5 flex flex-col justify-center">
                     {/* Absolute positioned elements with blurred background */}
                     <div
                         className="absolute pos-center w-[67.14px] h-[66.506px] bg-white"

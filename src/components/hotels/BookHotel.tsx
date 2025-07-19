@@ -206,7 +206,7 @@ function BookHotel() {
                         className="flex items-center justify-between cursor-pointer"
                     >
                         <div className="flex gap-[6px]">
-                            <i className="fa-regular fa-location-dot text-[var(--primary)] text-[20px]"></i>
+                            <i className="fa-regular fa-location-dot text-primary-500 text-[20px]"></i>
 
                             <p
                                 className="text-[12px] sm:text-[13.208px] font-bold mb-1 overflow-hidden text-nowrap whitespace-nowrap max-w-full"
@@ -263,7 +263,7 @@ function BookHotel() {
                         className="flex items-center justify-between cursor-pointer"
                     >
                         <div className="flex gap-[6px]">
-                            <i className="fa-light fa-users-medical text-[var(--primary)] sm:text-[20px]"></i>
+                            <i className="fa-light fa-users-medical text-primary-500 sm:text-[20px]"></i>
 
                             <p className="text-[12px] sm:text-[15.208px] font-bold mb-1">
                                 شخص 1 / سياحية

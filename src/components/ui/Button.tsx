@@ -1,18 +1,16 @@
 type ButtonProps = {
     classNames?: string;
     title: string;
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export default function Button({ classNames, title, onClick }: ButtonProps) {
     return (
         <button
-            className={`p-1 border border-white rounded-full text-[12.062px] ${classNames}`}
+            className={`px-2 py-2 rounded-xl text-[12px] ${classNames}`}
             onClick={onClick}
         >
-            <span className="block rounded-full bg-white font-medium text-[var(--primary)] h-full py-[6px] w-[80px] sm:w-[112px]">
-                {title}
-            </span>
+            {title}
         </button>
     );
 }

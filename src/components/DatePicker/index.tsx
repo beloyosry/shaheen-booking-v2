@@ -11,7 +11,12 @@ type DatePickerProps = {
     classNames?: string;
 };
 
-export default function DatePicker({ formik, CheckIn, CheckOut, classNames }: DatePickerProps) {
+export default function DatePicker({
+    formik,
+    CheckIn,
+    CheckOut,
+    classNames,
+}: DatePickerProps) {
     const convertDateFormat = (date: Date) => {
         const formattedDate = format(date, "yyyy-MM-dd");
         return formattedDate;
@@ -30,7 +35,12 @@ export default function DatePicker({ formik, CheckIn, CheckOut, classNames }: Da
     });
 
     return (
-        <div className={classNames || "hero-calnder border border-[#CACACE] h-[82.33px] relative rounded-[12.167px] flex items-center justify-between py-[10px] px-2 w-full lg:w-[calc(95%/3)] lg:mx-4"}>
+        <div
+            className={
+                classNames ||
+                "hero-calnder border border-[#CACACE] h-[82.33px] relative rounded-[12.167px] flex items-center justify-between py-[10px] px-2 w-full lg:w-[calc(95%/3)] lg:mx-4"
+            }
+        >
             <div className="w-[49%] flex justify-center flex-col relative">
                 <p className="text-[#AFB0B6] text-[9.234px] font-bold mb-[6px]">
                     المغادرة
@@ -40,7 +50,7 @@ export default function DatePicker({ formik, CheckIn, CheckOut, classNames }: Da
                     htmlFor="departureDate"
                     className="flex gap-[6px] cursor-pointer w-fit"
                 >
-                    <i className="fa-duotone fa-calendar-days text-[var(--primary)] sm:text-[20px]"></i>
+                    <i className="fa-duotone fa-calendar-days text-primary-500 sm:text-[20px]"></i>
 
                     <p className="text-[12px] sm:text-[12.208px] font-bold mb-1">
                         {formattedDepartureDate}
@@ -77,7 +87,7 @@ export default function DatePicker({ formik, CheckIn, CheckOut, classNames }: Da
                     htmlFor="returnDate"
                     className="flex gap-[6px] cursor-pointer w-fit"
                 >
-                    <i className="fa-duotone fa-calendar-days text-[var(--primary)] sm:text-[20px]"></i>
+                    <i className="fa-duotone fa-calendar-days text-primary-500 sm:text-[20px]"></i>
 
                     <p className="text-[12px] sm:text-[12.208px] font-bold mb-1">
                         {returnDepartureDate}
