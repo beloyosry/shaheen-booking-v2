@@ -115,6 +115,10 @@ label {
     text-transform: capitalize;
 }
 
+.price-bg{
+    background: url("./components/home/popular/price-bg.png") center center/cover no-repeat;
+}
+
 .min-input {
     padding: 18px 15px;
     border-radius: 9.774px;

@@ -4,6 +4,7 @@ import Banner from "../../../components/home/Banner";
 import Download from "../../../components/home/Download";
 // import Recommendation from "../../../components/recommendation";
 import Destinations from "../../../components/home/Destinations";
+import Popular from "../../../components/home/Popular";
 // import Offers from "../../../components/Offers";
 
 function HomePage() {
@@ -20,6 +21,8 @@ function HomePage() {
             {/* <Offers /> */}
 
             <Download />
+
+            <Popular />
         </Fragment>
     );
 }
