@@ -1,157 +1,89 @@
-import apple from "/images/apple_store.png";
-import google from "/images/google_play.png";
-import screen_1 from "/images/mobile-screen-1.png";
-import screen_2 from "/images/mobile-screen-2.png";
-import yellow_plane from "/images/yellow-plane.png";
-import { Link } from "react-router-dom";
+import AppScreenShoot from "./app-screenshot.png";
+import AppBg from "./add-bg.png";
 
 function Download() {
-    // Function to render the decorative patterns
-    const renderBatterns = (
-        startIndex: number,
-        step: number,
-        className: string
-    ) => {
-        // Generate an array of values for top positioning
-        const arr = [];
-
-        for (let i = startIndex; i < 350; i += step) {
-            arr.push(i);
-        }
-
-        // Map over the array and return div elements for the decorative patterns
-        return arr.map((item, index) => {
-            return (
-                <div
-                    key={index}
-                    className={className}
-                    style={{
-                        top: `${item}px`,
-                        background:
-                            "linear-gradient(90deg, rgba(245,243,243,1) 2%, rgba(90,61,240,0.7763480392156863) 39%, rgba(245,243,243,1) 88%)",
-                    }}
-                ></div>
-            );
-        });
-    };
-
-    // Return a section containing various elements
     return (
-        <section className="relative mb-[50px] px-4 sm:px-0 sm:mb-[200px]">
-            {/* Main container */}
-            <div className="lg:w-[850px] z-10 m-auto sm:px-10 relative bg-secondary-500 rounded-[15.739px] md:h-[235.976px] flex flex-wrap md:flex-nowrap items-center justify-end">
-                {/* Mobile screens for smaller screens */}
-                <div className="flex items-center justify-around mb-10 mt-[-100px] gap-x-3 w-full md:hidden">
-                    <img
-                        src={screen_2}
-                        alt=""
-                        loading="lazy"
-                        className="w-[140px]"
-                    />
+        <div className="h-screen w-full bg-white flex flex-col items-center justify-center px-20">
+            <div className="flex justify-between items-center relative w-full bg-secondary-500 rounded-t-2xl rounded-bl-2xl rounded-br-[15rem] overflow-hidden">
+                {/* Background */}
+                <img
+                    src={AppBg}
+                    alt=""
+                    className="absolute top-0 left-0 w-full h-full object-cover z-0"
+                />
 
-                    <img
-                        src={screen_1}
-                        alt=""
-                        loading="lazy"
-                        className="w-[155px]"
-                    />
+                <div className="z-10">
+                    <img src={AppScreenShoot} alt="App Screen Shoot" />
                 </div>
-
-                {/* Download information for smaller screens */}
-                <div className="md:w-[380px] mb-10 md:mb-0 text-white">
-                    {/* Title */}
-                    <h3 className="text-[22.848px] font-[800] mb-2">
-                        حمل تطبيقنا قريبا
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-[13.11px] mb-4">
-                        احصل على وصول سهل وسريع إلى أفضل العروض والتجارب
-                        السفرية. قم بتحميل تطبيقنا الآن للحصول على تجربة سفر
-                        مميزة واحجز رحلتك بكل سهولة ويسر أثناء التنقل. فقط ابحث
-                        عنا في متجر التطبيقات وابدأ في استكشاف العالم!
+                <div className="flex flex-col items-center gap-2 pr-40 z-10">
+                    <h1
+                        className="text-white text-6xl font-bold"
+                        style={{
+                            fontFamily: "Playfair Display, serif",
+                        }}
+                    >
+                        Get The App now!
+                    </h1>
+                    <p className="text-white text-2xl">
+                        Get what you need, when you need it
                     </p>
 
-                    {/* Download links */}
-                    <div className="flex items-center gap-2">
-                        {/* Apple Store Link */}
-                        <Link to={""}>
-                            <img
-                                src={apple}
-                                alt=""
-                                loading="lazy"
-                                className="w-fit"
-                            />
-                        </Link>
-
-                        {/* Google Play Link */}
-                        <Link to={""}>
-                            <img
-                                src={google}
-                                alt=""
-                                loading="lazy"
-                                className="w-fit"
-                            />
-                        </Link>
+                    {/* Stores Buttons */}
+                    <div className="flex justify-between items-center gap-2">
+                        <button
+                            type="button"
+                            className="flex items-center justify-center w-48 mt-3 text-white bg-black h-14 rounded-xl"
+                        >
+                            <div className="mr-3">
+                                <svg viewBox="0 0 384 512" width={30}>
+                                    <path
+                                        fill="currentColor"
+                                        d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"
+                                    />
+                                </svg>
+                            </div>
+                            <div>
+                                <div className="text-xs">Download on the</div>
+                                <div className="-mt-1 font-sans text-xl font-semibold">
+                                    App Store
+                                </div>
+                            </div>
+                        </button>
+                        <button
+                            type="button"
+                            className="flex items-center justify-center w-48 mt-3 text-white bg-black rounded-lg h-14"
+                        >
+                            <div className="mr-3">
+                                <svg viewBox="30 336.7 120.9 129.2" width={30}>
+                                    <path
+                                        fill="#FFD400"
+                                        d="M119.2,421.2c15.3-8.4,27-14.8,28-15.3c3.2-1.7,6.5-6.2,0-9.7  c-2.1-1.1-13.4-7.3-28-15.3l-20.1,20.2L119.2,421.2z"
+                                    />
+                                    <path
+                                        fill="#FF3333"
+                                        d="M99.1,401.1l-64.2,64.7c1.5,0.2,3.2-0.2,5.2-1.3  c4.2-2.3,48.8-26.7,79.1-43.3L99.1,401.1L99.1,401.1z"
+                                    />
+                                    <path
+                                        fill="#48FF48"
+                                        d="M99.1,401.1l20.1-20.2c0,0-74.6-40.7-79.1-43.1  c-1.7-1-3.6-1.3-5.3-1L99.1,401.1z"
+                                    />
+                                    <path
+                                        fill="#3BCCFF"
+                                        d="M99.1,401.1l-64.3-64.3c-2.6,0.6-4.8,2.9-4.8,7.6  c0,7.5,0,107.5,0,113.8c0,4.3,1.7,7.4,4.9,7.7L99.1,401.1z"
+                                    />
+                                </svg>
+                            </div>
+                            <div>
+                                <div className="text-xs">GET IT ON</div>
+                                <div className="-mt-1 font-sans text-xl font-semibold">
+                                    Google Play
+                                </div>
+                            </div>
+                        </button>
                     </div>
                 </div>
-
-                {/* Background elements for smaller screens */}
-                <div
-                    className="bg-white w-[105.766px] h-[105.766px] rounded-full absolute -bottom-10 right-20"
-                    style={{ filter: "blur(52.43915939331055px)" }}
-                >
-                    {" "}
-                </div>
-                <div
-                    className="bg-white w-[105.766px] h-[105.766px] rounded-full absolute top-[30%] translate-y-[-50%] right-20"
-                    style={{ filter: "blur(52.43915939331055px)" }}
-                >
-                    {" "}
-                </div>
-
-                {/* Mobile screens for larger screens */}
-                <img
-                    src={screen_1}
-                    alt=""
-                    loading="lazy"
-                    className="absolute z-10 -right-5 w-fit hidden md:block"
-                />
-
-                <img
-                    src={screen_2}
-                    alt=""
-                    loading="lazy"
-                    className="absolute right-[115px] z-10 bottom-[0px] w-fit hidden md:block"
-                />
-
-                {/* Yellow plane image for larger screens */}
-                <img
-                    src={yellow_plane}
-                    loading="lazy"
-                    alt=""
-                    className="absolute z-10 left-[-50px] lg:-left-36 -top-[150px] lg:-top-24 w-fit rotate-[90deg] lg:rotate-0 hidden md:block"
-                />
             </div>
-
-            {/* Right Battern for larger screens */}
-            <div className="hidden lg:block">
-                {renderBatterns(
-                    -100,
-                    30,
-                    "absolute top-[-100px] right-[-150px] w-[55%] -rotate-[5deg] h-[0.63px]"
-                )}
-            </div>
-
-            {/* Left Battern for medium screens */}
-            <div className="hidden md:block">
-                {renderBatterns(
-                    -50,
-                    25,
-                    "absolute left-[60px] w-[30%] -rotate-[17deg] h-[0.63px]"
-                )}
-            </div>
-        </section>
+        </div>
     );
 }
 
