@@ -115,7 +115,7 @@ label {
     text-transform: capitalize;
 }
 
-.price-bg{
+.brush-bg{
     background: url("./components/home/popular/price-bg.png") center center/cover no-repeat;
 }
 

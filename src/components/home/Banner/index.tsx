@@ -8,7 +8,7 @@ function Banner() {
                 <p className="banner-text">
                     "{" "}
                     <span
-                        className="text-primary-500"
+                        className="brush-bg px-2"
                         style={{ fontFamily: "Playfair Display" }}
                     >
                         Discover
@@ -22,7 +22,7 @@ function Banner() {
                 <p className="banner-text">
                     " The world is waiting.{" "}
                     <span
-                        className="text-primary-500"
+                        className="brush-bg px-2"
                         style={{ fontFamily: "Playfair Display" }}
                     >
                         Let’s
