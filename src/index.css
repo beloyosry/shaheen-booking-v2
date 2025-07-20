@@ -92,6 +92,29 @@ label {
     background: url("./components/home/Hero/hero-bg.png") center center/cover no-repeat;
 }
 
+.wavy-text{
+    text-decoration-line: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: var(--color-primary-500);
+    text-underline-offset: 20.5%;   
+}
+
+.banner-text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+    color: white;
+    text-align: center;
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 150%;
+    letter-spacing: -0.704px;
+    text-transform: capitalize;
+}
+
 .min-input {
     padding: 18px 15px;
     border-radius: 9.774px;

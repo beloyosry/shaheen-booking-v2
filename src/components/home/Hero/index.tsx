@@ -13,16 +13,7 @@ function Hero() {
             </h1>
             <p className="text-white text-[40px] mt-5 ">
                 The world is waiting. Let’s get you{" "}
-                <span
-                    style={{
-                        textDecorationLine: "underline",
-                        textDecorationStyle: "wavy",
-                        textDecorationColor: "var(--color-primary-500)",
-                        textUnderlineOffset: "20.5%",
-                    }}
-                >
-                    there
-                </span>
+                <span className="wavy-text">there</span>
             </p>
 
             <BookingSearch />
