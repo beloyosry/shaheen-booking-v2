@@ -307,7 +307,7 @@ function BookingSearch() {
                     </button>
                     {showDropdown && (
                         <ul
-                            className="absolute top-10 left-1/2 -translate-x-1/2 w-full bg-white shadow-lg py-1 rounded-xl"
+                            className="absolute top-10 left-1/2 -translate-x-1/2 z-50 w-full bg-white shadow-lg py-1 rounded-xl"
                             aria-labelledby="dropdown-button"
                             role="menu"
                         >

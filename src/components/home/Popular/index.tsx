@@ -11,15 +11,27 @@ function Popular() {
     const slides = [
         {
             image: Card1,
-            title: "India",
+            title: "Alamein",
+            subtitle: "Matrouh Governorate, Egypt",
+            rate: 3,
+            price: 222,
+            days: 3,
         },
         {
             image: Card2,
-            title: "Japan",
+            title: "Alamein",
+            subtitle: "Matrouh Governorate, Egypt",
+            rate: 3,
+            price: 222,
+            days: 3,
         },
         {
             image: Card3,
-            title: "Dubai",
+            title: "Alamein",
+            subtitle: "Matrouh Governorate, Egypt",
+            rate: 3,
+            price: 222,
+            days: 3,
         },
     ];
 
@@ -90,15 +102,15 @@ function Popular() {
                                         <div className="w-full flex justify-between items-center gap-1">
                                             <div>
                                                 <h1 className="text-xl font-bold">
-                                                    Alamein
+                                                    {slide.title}
                                                 </h1>
                                                 <p className="text-gray-400 capitalize">
-                                                    matrouh governorate, egypt
+                                                    {slide.subtitle}
                                                 </p>
                                             </div>
                                             <div className="price-bg py-2 px-3">
                                                 <p className="text-white">
-                                                    222$
+                                                    {slide.price}$
                                                 </p>
                                             </div>
                                         </div>
@@ -106,15 +118,20 @@ function Popular() {
                                         <div className="w-full flex justify-between items-center gap-2">
                                             <div className="flex items-center gap-1">
                                                 {/* Rate */}
-                                                <i className="fa-solid fa-star text-[#FFD400]"></i>
-                                                <i className="fa-solid fa-star text-[#FFD400]"></i>
-                                                <i className="fa-solid fa-star text-[#FFD400]"></i>
-                                                <i className="fa-regular fa-star text-[#FFD400]"></i>
-                                                <i className="fa-regular fa-star text-[#FFD400]"></i>
+                                                {/* Show solid stars for the rating */}
+                                                {Array.from(
+                                                    { length: 5 },
+                                                    (_, index) => (
+                                                        <i
+                                                            key={index}
+                                                            className={`fa-${index < slide.rate ? "solid" : "regular"} fa-star text-[#FFD400]`}
+                                                        ></i>
+                                                    )
+                                                )}
                                             </div>
                                             <div>
                                                 <h1 className="text-secondary-500 font-bold">
-                                                    3 Days
+                                                    {slide.days} 
                                                 </h1>
                                             </div>
                                         </div>
