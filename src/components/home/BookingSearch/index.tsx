@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import Calendar from "../../ui/Calendar";
 
 const BookingButton = ({
     activeBtn,
@@ -64,17 +65,194 @@ function InputField({
     placeholder,
     type,
     icon,
+    disabled = false,
+    error = false,
+    inputClassName = "",
 }: {
     placeholder: string;
     type: string;
     icon: React.ReactNode;
+    disabled?: boolean;
+    error?: boolean;
+    inputClassName?: string;
 }) {
+    const [showCalendar, setShowCalendar] = useState(false);
+    const calendarRef = useRef<HTMLDivElement>(null);
+    const incompleteAlertShown = useRef(false);
+    const [startDate, setStartDate] = useState<Date | null>(null);
+    const [endDate, setEndDate] = useState<Date | null>(null);
+
+    if (type === "date") {
+        const handleClickOutside = (e: MouseEvent) => {
+            // Only process if clicking outside the calendar
+            if (
+                calendarRef.current &&
+                !calendarRef.current.contains(e.target as Node)
+            ) {
+                // Check if selection is complete
+                const isSelectionComplete = startDate && endDate;
+                const isNoSelection = !startDate && !endDate;
+
+                if (isSelectionComplete || isNoSelection) {
+                    // Close calendar if selection is complete or no selection made
+                    setShowCalendar(false);
+                    document.removeEventListener(
+                        "mousedown",
+                        handleClickOutside
+                    );
+                    incompleteAlertShown.current = false; // Reset for next time
+                } else if (!incompleteAlertShown.current) {
+                    // If only start date is selected and alert not shown yet, show visual indicator
+                    const calendarElement = calendarRef.current;
+                    if (
+                        calendarElement &&
+                        !calendarElement.classList.contains(
+                            "incomplete-selection"
+                        )
+                    ) {
+                        calendarElement.classList.add("incomplete-selection");
+                        incompleteAlertShown.current = true; // Mark as shown
+
+                        // Remove the class after animation completes
+                        setTimeout(() => {
+                            if (calendarElement) {
+                                calendarElement.classList.remove(
+                                    "incomplete-selection"
+                                );
+                            }
+                        }, 1000);
+                    }
+                }
+            }
+        };
+
+        const toggleCalendar = () => {
+            const newState = !showCalendar;
+            setShowCalendar(newState);
+
+            if (newState) {
+                // Reset the incomplete alert state when opening calendar
+                if (calendarRef.current) {
+                    calendarRef.current.classList.remove(
+                        "incomplete-selection"
+                    );
+                }
+
+                // Add event listener when calendar is shown
+                setTimeout(() => {
+                    document.addEventListener("mousedown", handleClickOutside);
+                }, 0);
+            } else {
+                // Remove event listener when calendar is hidden
+                document.removeEventListener("mousedown", handleClickOutside);
+            }
+        };
+
+        // Format date range for display
+        const formatDateRange = () => {
+            if (startDate && endDate) {
+                return `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
+            } else if (startDate) {
+                return `${startDate.toLocaleDateString()} - Select end date`;
+            } else {
+                return placeholder || "Select date range";
+            }
+        };
+
+        // Handle date selection
+        const handleDateSelect = (date: Date, isEndDate: boolean = false) => {
+            if (isEndDate) {
+                setEndDate(date);
+            } else {
+                setStartDate(date);
+                setEndDate(null); // Reset end date when selecting a new start date
+            }
+        };
+
+        // Handle range selection
+        const handleRangeSelect = (start: Date, end: Date) => {
+            setStartDate(start);
+            setEndDate(end);
+        };
+
+        return (
+            <div
+                className={`peer justify-start relative flex items-center gap-2 min-w-[200px] rounded-3xl py-5 px-3 ${
+                    error
+                        ? "form-error cursor-pointer"
+                        : disabled
+                        ? "border-gray-300 bg-dark-50 cursor-not-allowed opacity-50"
+                        : "cursor-pointer"
+                }`}
+                style={{
+                    border:
+                        showCalendar && !disabled
+                            ? "2px solid var(--color-primary-500)"
+                            : "1px solid var(--color-gray-200)",
+                }}
+                onClick={toggleCalendar}
+            >
+                {icon}
+
+                <span
+                    className={`${
+                        !startDate ? "text-gray-400" : "text-gray-900"
+                    } ${error ? "text-red-500" : ""}`}
+                >
+                    {formatDateRange()}
+                </span>
+
+                {showCalendar && !disabled && (
+                    <div
+                        ref={calendarRef}
+                        className="absolute top-18 left-1/2 -translate-x-1/2 z-50 mt-1 transition-all duration-300"
+                    >
+                        <Calendar
+                            initialDate={startDate || new Date()}
+                            onDateSelect={handleDateSelect}
+                            rangeSelect={true}
+                            onRangeSelect={handleRangeSelect}
+                        />
+                    </div>
+                )}
+
+                <input
+                    type="hidden"
+                    value={startDate ? startDate.toISOString() : ""}
+                    name="start_date"
+                    className={`peer form-input ${error ? "form-error" : ""} ${
+                        disabled
+                            ? "border-gray-300 bg-dark-50 cursor-not-allowed opacity-50"
+                            : ""
+                    } ${inputClassName}`}
+                    disabled={disabled}
+                />
+                <input
+                    type="hidden"
+                    value={endDate ? endDate.toISOString() : ""}
+                    name="end_date"
+                    className="hidden"
+                    disabled={disabled}
+                />
+            </div>
+        );
+    }
+
     return (
         <div className="flex items-center gap-2 w-[200px] border border-gray-200 rounded-3xl p-3">
             {icon}
             <div>
                 <div className="text-xs text-gray-500">{placeholder}</div>
-                <input type={type} placeholder={placeholder} />
+                <input
+                    type={type}
+                    placeholder={placeholder}
+                    className={`${error ? "form-error" : ""} ${
+                        disabled
+                            ? "border-gray-300 bg-dark-50 cursor-not-allowed opacity-50"
+                            : ""
+                    } ${inputClassName}`}
+                    disabled={disabled}
+                />
             </div>
         </div>
     );
@@ -180,7 +358,7 @@ function BookingSearch() {
 
                 <InputField
                     placeholder="Dates"
-                    type="text"
+                    type="date"
                     icon={
                         <i className="far fa-calendar-days text-primary-500" />
                     }
@@ -212,7 +390,7 @@ function BookingSearch() {
 
                 <InputField
                     placeholder="Dates"
-                    type="text"
+                    type="date"
                     icon={
                         <i className="far fa-calendar-days text-primary-500" />
                     }
