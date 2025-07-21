@@ -4,28 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { logFormData } from "../../../utils";
 import { useForm } from "react-hook-form";
-import InputField from "../../form/InputField";
 import Loading from "../../ui/Loading";
-
-type DateRange = {
-    startDate: Date | null;
-    endDate: Date | null;
-};
-
-type FlightForm = {
-    tripType: string;
-    selectedOption: string;
-    from: string;
-    to: string;
-    date: DateRange;
-    travelers: string;
-};
-type HotelsForm = {
-    to: string;
-    date: DateRange;
-    travelers: string;
-};
-type TripTypes = "roundtrip" | "oneway" | "multicity";
+import type { FlightForm, HotelsForm, TripTypes } from "./types";
+import HotelSearchForm from "./HotelSearchForm";
+import FlightSearchForm from "./FlightSearchForm";
 
 const dateRangeSchema = z.object({
     startDate: z.date().nullable(),
@@ -81,54 +63,12 @@ const BookingButton = ({
     );
 };
 
-// Trip type options for flights
-const TripOption = ({
-    label,
-    isActive,
-    onClick,
-}: {
-    label: string;
-    isActive: boolean;
-    onClick: () => void;
-}) => (
-    <div
-        onClick={onClick}
-        className={`flex items-center gap-2 cursor-pointer ${
-            isActive ? "text-secondary-500" : "text-gray-400"
-        }`}
-    >
-        <div className="flex flex-col items-center">
-            <span className="text-sm">{label}</span>
-            {isActive && (
-                <div className="w-1.5 h-1.5 bg-secondary-500 rounded-full m-auto"></div>
-            )}
-        </div>
-    </div>
-);
-
 function BookingSearch() {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [activeBtn, setActiveBtn] = useState(0);
     const [tripType, setTripType] = useState<TripTypes>("roundtrip");
-    const [showDropdown, setShowDropdown] = useState(false);
     const [selectedOption, setSelectedOption] = useState("Economy");
-
-    const dropDownListOptions = [
-        { label: "Economy", value: "economy" },
-        { label: "Premium Economy", value: "premium economy" },
-        { label: "Business", value: "business" },
-        { label: "First Class", value: "first class" },
-    ];
-
-    const handleOptionClick = (option: string) => {
-        setSelectedOption(option);
-        setShowDropdown(false);
-    };
-
-    const handleSelectType = (type: TripTypes) => {
-        setTripType(type);
-    };
 
     const {
         handleSubmit: flightSubmit,
@@ -267,161 +207,6 @@ function BookingSearch() {
         //     });
     };
 
-    // Flight search form component
-    const FlightSearchForm = () => (
-        <form onSubmit={flightSubmit(onSubmitFlight)} className="p-4">
-            <div className="flex justify-start gap-4 mb-4">
-                <TripOption
-                    label="Round-trip"
-                    isActive={tripType === "roundtrip"}
-                    onClick={() => handleSelectType("roundtrip")}
-                />
-                <TripOption
-                    label="One-Way"
-                    isActive={tripType === "oneway"}
-                    onClick={() => handleSelectType("oneway")}
-                />
-                <TripOption
-                    label="Multi-City"
-                    isActive={tripType === "multicity"}
-                    onClick={() => handleSelectType("multicity")}
-                />
-
-                <div className="relative">
-                    <button
-                        onClick={() => setShowDropdown(!showDropdown)}
-                        className="flex items-center gap-1 bg-blue-50 text-blue-600 px-3 py-1 rounded-md"
-                        id="dropdown-button"
-                        aria-expanded="false"
-                        aria-haspopup="true"
-                    >
-                        <span className="text-xs">{selectedOption}</span>
-                        <span className="text-xs">▼</span>
-                    </button>
-                    {showDropdown && (
-                        <ul
-                            className="absolute top-10 left-1/2 -translate-x-1/2 z-50 w-full bg-white shadow-lg py-1 rounded-xl"
-                            aria-labelledby="dropdown-button"
-                            role="menu"
-                        >
-                            {dropDownListOptions.map((option) => (
-                                <li
-                                    key={option.value}
-                                    onClick={() =>
-                                        handleOptionClick(option.label)
-                                    }
-                                    className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                                    role="menuitem"
-                                >
-                                    {option.label}
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </div>
-            </div>
-
-            <div className="w-full flex justify-between items-center gap-4">
-                <div className="relative flex items-center gap-8">
-                    <InputField
-                        placeholder="Leaving From?"
-                        type="text"
-                        icon={
-                            <i className="far fa-location-dot text-primary-500" />
-                        }
-                        name="from"
-                        control={flightControl}
-                    />
-
-                    <div className="absolute left-[45%] flex flex-col justify-center items-center bg-white w-10 h-10 rounded-full">
-                        <div className="flex items-center gap-2 text-primary-500">
-                            <i className="far fa-arrow-left"></i>
-                        </div>
-                        <div className="flex items-center gap-2 text-primary-500">
-                            <i className="far fa-arrow-right"></i>
-                        </div>
-                    </div>
-
-                    <InputField
-                        placeholder="Going To?"
-                        type="text"
-                        icon={
-                            <i className="far fa-location-dot text-primary-500" />
-                        }
-                        name="to"
-                        control={flightControl}
-                    />
-                </div>
-
-                <InputField
-                    placeholder="Dates"
-                    type="date"
-                    icon={
-                        <i className="far fa-calendar-days text-primary-500" />
-                    }
-                    name="date"
-                    control={flightControl}
-                />
-
-                <InputField
-                    placeholder="Travelers"
-                    type="number"
-                    icon={<i className="far fa-user text-primary-500" />}
-                    name="travelers"
-                    control={flightControl}
-                />
-                <button
-                    type="submit"
-                    className="bg-primary-500 text-white px-8 py-3 rounded-2xl font-medium"
-                >
-                    Search
-                </button>
-            </div>
-        </form>
-    );
-
-    // Hotel search form component
-    const HotelSearchForm = () => (
-        <form onSubmit={hotelSubmit(onSubmitHotel)} className="p-4">
-            <div className="w-full flex justify-between items-center gap-4">
-                <InputField
-                    placeholder="Where to?"
-                    type="text"
-                    icon={
-                        <i className="far fa-location-dot text-primary-500" />
-                    }
-                    name="to"
-                    control={hotelControl}
-                />
-
-                <InputField
-                    placeholder="Dates"
-                    type="date"
-                    icon={
-                        <i className="far fa-calendar-days text-primary-500" />
-                    }
-                    name="date"
-                    control={hotelControl}
-                />
-
-                <InputField
-                    placeholder="Travelers"
-                    type="number"
-                    icon={<i className="far fa-user text-primary-500" />}
-                    name="travelers"
-                    control={hotelControl}
-                />
-
-                <button
-                    type="submit"
-                    className="bg-primary-500 text-white px-8 py-3 rounded-2xl font-medium"
-                >
-                    Search
-                </button>
-            </div>
-        </form>
-    );
-
     if (isLoading) return <Loading />;
 
     return (
@@ -452,10 +237,26 @@ function BookingSearch() {
             {/* Container for the selected booking component */}
             <div className="bg-white rounded-b-3xl rounded-tr-3xl shadow-md">
                 {/* Render Hotel search if activeBtn is 1 */}
-                {activeBtn === 1 ? <HotelSearchForm /> : null}
+                {activeBtn === 1 ? (
+                    <HotelSearchForm
+                        handleFormSubmit={onSubmitHotel}
+                        handleSubmit={hotelSubmit}
+                        control={hotelControl}
+                    />
+                ) : null}
 
                 {/* Render Flight search if activeBtn is 0 */}
-                {activeBtn === 0 ? <FlightSearchForm /> : null}
+                {activeBtn === 0 ? (
+                    <FlightSearchForm
+                        handleFormSubmit={onSubmitFlight}
+                        handleSubmit={flightSubmit}
+                        control={flightControl}
+                        setTripType={setTripType}
+                        tripType={tripType}
+                        setSelectedOption={setSelectedOption}
+                        selectedOption={selectedOption}
+                    />
+                ) : null}
             </div>
         </div>
     );
