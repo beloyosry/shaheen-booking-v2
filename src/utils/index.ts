@@ -55,4 +55,26 @@ const handleDelete = (accept: () => void) => {
     });
 };
 
-export { setSecureCookie, getCookie, handleLogOut, numberFormat, handleDelete };
+const logFormData = (apiFormData: FormData, message?: string) => {
+    console.log(message + ":" || "FormData contents:");
+    for (const pair of apiFormData.entries()) {
+        console.log(
+            pair[0] +
+                ": " +
+                (pair[1] instanceof File
+                    ? `File: ${(pair[1] as File).name}, ${
+                          (pair[1] as File).size
+                      } bytes`
+                    : pair[1])
+        );
+    }
+};
+
+export {
+    setSecureCookie,
+    getCookie,
+    handleLogOut,
+    numberFormat,
+    handleDelete,
+    logFormData,
+};
