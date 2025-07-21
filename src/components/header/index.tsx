@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import logo from "/images/logo.png";
+import { Link, useLocation } from "react-router-dom";
+import LightLogo from "./logo-light.png";
+import DarkLogo from "./logo-dark.png";
 import HeaderAuth from "./auth";
 import MobileSidebar from "./sidebar";
 
 function Header() {
+    const { pathname } = useLocation();
     const [visible, setVisible] = useState(false);
 
     return (
@@ -12,9 +14,9 @@ function Header() {
             <div className="container flex items-center justify-between">
                 <Link to={"/"}>
                     <img
-                        src={logo}
+                        src={pathname === "/" ? LightLogo : DarkLogo}
                         alt="Shasheen logo"
-                        className="w-[71px] sm:w-fit"
+                        className="w-10 h-10 sm:w-fit"
                         loading="lazy"
                     />
                 </Link>
