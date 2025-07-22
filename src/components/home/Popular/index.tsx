@@ -6,6 +6,7 @@ import Card1 from "./card-1.png";
 import Card2 from "./card-2.png";
 import Card3 from "./card-3.png";
 import { useState } from "react";
+import LikeButton from "../../ui/LikeButton";
 
 function Popular() {
     const slides = [
@@ -39,13 +40,6 @@ function Popular() {
         Array(slides.length).fill(false)
     );
 
-    const handleHeartClick = (index: number) => {
-        setIsHeartClicked((prev) => {
-            const newHeartClicked = [...prev];
-            newHeartClicked[index] = !newHeartClicked[index];
-            return newHeartClicked;
-        });
-    };
     return (
         <div className="relative h-screen bg-white">
             {/* Border line */}
@@ -75,22 +69,11 @@ function Popular() {
                             <SwiperSlide key={index}>
                                 <div className="relative w-100 h-100 rounded-3xl bg-white border border-gray-200 shadow-xl mb-10">
                                     {/* Like Button */}
-                                    <div
-                                        onClick={() => handleHeartClick(index)}
-                                        className="absolute top-5 right-5 py-2 px-5 bg-white/10 backdrop-blur-sm rounded-b-3xl rounded-tr-2xl cursor-pointer hover:bg-white/20"
-                                    >
-                                        <i
-                                            className={`fa${
-                                                isHeartClicked[index]
-                                                    ? "s"
-                                                    : "r"
-                                            } fa-heart text-xl ${
-                                                isHeartClicked[index]
-                                                    ? "text-red-500"
-                                                    : "text-white"
-                                            }`}
-                                        />
-                                    </div>
+                                    <LikeButton
+                                        isHeartClicked={isHeartClicked}
+                                        setIsHeartClicked={setIsHeartClicked}
+                                        index={index}
+                                    />
 
                                     <img
                                         src={slide.image}
@@ -124,14 +107,19 @@ function Popular() {
                                                     (_, index) => (
                                                         <i
                                                             key={index}
-                                                            className={`fa-${index < slide.rate ? "solid" : "regular"} fa-star text-[#FFD400]`}
+                                                            className={`fa-${
+                                                                index <
+                                                                slide.rate
+                                                                    ? "solid"
+                                                                    : "regular"
+                                                            } fa-star text-[#FFD400]`}
                                                         ></i>
                                                     )
                                                 )}
                                             </div>
                                             <div>
                                                 <h1 className="text-secondary-500 font-bold">
-                                                    {slide.days} 
+                                                    {slide.days}
                                                 </h1>
                                             </div>
                                         </div>

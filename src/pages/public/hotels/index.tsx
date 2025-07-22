@@ -24,7 +24,19 @@ const hotelSchema = z.object({
 
 const HotelsPage = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedOption, setSelectedOption] = useState("Recommended");
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [isHeartClicked, setIsHeartClicked] = useState<boolean[]>(
+        Array(hotels.length).fill(false)
+    );
     const navigate = useNavigate();
+
+    const dropDownListOptions = [
+        { label: "Economy", value: "economy" },
+        { label: "Premium Economy", value: "premium economy" },
+        { label: "Business", value: "business" },
+        { label: "First Class", value: "first class" },
+    ];
 
     const { control, handleSubmit, reset } = useForm<HotelsForm>({
         resolver: zodResolver(hotelSchema),
@@ -89,49 +101,95 @@ const HotelsPage = () => {
         //     });
     };
 
+    const handleOptionClick = (option: string) => {
+        setSelectedOption(option);
+        setShowDropdown(false);
+    };
+
     if (isLoading) return <Loading />;
 
     return (
-        <PageLayout>
-            <div className="bg-white shadow-md border-gray-200 rounded-3xl mt-30 mb-10">
-                <HotelSearchForm
-                    handleFormSubmit={onSubmit}
-                    handleSubmit={handleSubmit}
-                    control={control}
-                />
-            </div>
-
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-gray-800">
-                    28 properties
-                </h1>
-                <div className="flex items-center">
-                    <span className="text-sm text-gray-600 mr-2">Sort by:</span>
-                    <select className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary-500">
-                        <option>Recommended</option>
-                        <option>Price: Low to High</option>
-                        <option>Price: High to Low</option>
-                        <option>Rating</option>
-                    </select>
-                </div>
-            </div>
-
-            <div className="flex flex-col md:flex-row gap-6">
-                {/* Filter Sidebar */}
-                <div className="w-full md:w-1/4 lg:w-1/5">
-                    <FilterSidebar />
+        <div className="bg-[#f4f4f4]">
+            <PageLayout className="pb-20">
+                {/* Search Form */}
+                <div className="bg-white shadow-md border-gray-200 rounded-3xl mt-30 mb-10">
+                    <HotelSearchForm
+                        handleFormSubmit={onSubmit}
+                        handleSubmit={handleSubmit}
+                        control={control}
+                    />
                 </div>
 
                 {/* Hotel Listings */}
-                <div className="w-full md:w-3/4 lg:w-4/5">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {hotels.map((hotel) => (
-                            <HotelCard key={hotel.id} hotel={hotel} />
-                        ))}
+                <div className="flex flex-col md:flex-row gap-6">
+                    {/* Filter Sidebar */}
+                    <div className="w-full md:w-1/4 lg:w-1/5">
+                        <FilterSidebar />
+                    </div>
+
+                    {/* Hotel Listings */}
+                    <div className="w-full">
+                        <div className="flex justify-between items-center mb-6">
+                            <h1 className="text-2xl font-bold text-gray-400">
+                                {hotels.length} properties
+                            </h1>
+
+                            {/* Sort Dropdown */}
+                            <div className="relative">
+                                <button
+                                    onClick={() =>
+                                        setShowDropdown(!showDropdown)
+                                    }
+                                    className="flex justify-between items-center gap-1 bg-secondary-100 border-2 border-secondary-500 text-secondary-500 font-medium py-3 px-6 rounded-full text-lg focus:outline-none cursor-pointer"
+                                    id="dropdown-button"
+                                    aria-expanded="false"
+                                    aria-haspopup="true"
+                                >
+                                    <span className="text-xs">
+                                        {selectedOption}
+                                    </span>
+                                    <span className="text-xs">▼</span>
+                                </button>
+                                {showDropdown && (
+                                    <ul
+                                        className="absolute top-15 left-1/2 -translate-x-1/2 z-50 w-full bg-white shadow-lg py-1 rounded-xl"
+                                        aria-labelledby="dropdown-button"
+                                        role="menu"
+                                    >
+                                        {dropDownListOptions.map((option) => (
+                                            <li
+                                                key={option.value}
+                                                onClick={() =>
+                                                    handleOptionClick(
+                                                        option.label
+                                                    )
+                                                }
+                                                className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                                role="menuitem"
+                                            >
+                                                {option.label}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-6">
+                            {hotels.map((hotel, index) => (
+                                <HotelCard
+                                    key={hotel.id}
+                                    hotel={hotel}
+                                    index={index}
+                                    isHeartClicked={isHeartClicked}
+                                    setIsHeartClicked={setIsHeartClicked}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </PageLayout>
+            </PageLayout>
+        </div>
     );
 };
 

@@ -1,5 +1,17 @@
-function PageLayout({ children }: { children: React.ReactNode }) {
-    return <div className="container mx-auto mt-20 mb-10">{children}</div>;
+function PageLayout({
+    children,
+    className,
+}: {
+    children: React.ReactNode;
+    className?: string;
+}) {
+    return (
+        <div
+            className={`container mx-auto pt-1  bg-transparent ${className}`}
+        >
+            {children}
+        </div>
+    );
 }
 
 export default PageLayout;

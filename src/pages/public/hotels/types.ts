@@ -6,5 +6,8 @@ export interface HotelProps {
     price: number;
     image: string;
     isFavorite?: boolean;
-    amenities: string[];
+    amenities: {
+        title: string;
+        icon: string;
+    }[];
 }

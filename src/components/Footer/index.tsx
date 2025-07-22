@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Logo from "./logo.png";
 
 export default function Footer() {
@@ -38,7 +39,9 @@ export default function Footer() {
             <div className="w-full relative px-5 z-10 grid grid-cols-1 md:grid-cols-3 gap-10">
                 {/* Left */}
                 <div className="space-y-6">
-                    <img src={Logo} alt="Logo" />
+                    <Link to="/" className="flex items-center">
+                        <img src={Logo} alt="Logo" />
+                    </Link>
 
                     <p className="font-semibold">
                         <span className="font-bold text-primary-500 text-xl">

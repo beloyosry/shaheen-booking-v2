@@ -1,59 +1,25 @@
 import type { HotelProps } from "./types";
+import { faker } from "@faker-js/faker";
 
-export const hotels: HotelProps[] = [
-    {
-        id: 1,
-        name: "Hotelux La Playa Alemain",
-        location: "Alemain",
-        rating: 4.4,
-        price: 222,
-        image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-        amenities: ["Breakfast", "Pool", "Free WiFi"],
-    },
-    {
-        id: 2,
-        name: "Hotelux La Playa Alemain",
-        location: "Alemain",
-        rating: 4.4,
-        price: 222,
-        image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-        amenities: ["Breakfast", "Pool", "Free WiFi"],
-    },
-    {
-        id: 3,
-        name: "Hotelux La Playa Alemain",
-        location: "Alemain",
-        rating: 4.4,
-        price: 222,
-        image: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=749&q=80",
-        isFavorite: true,
-        amenities: ["Breakfast", "Pool", "Free WiFi"],
-    },
-    {
-        id: 4,
-        name: "Hotelux La Playa Alemain",
-        location: "Alemain",
-        rating: 4.4,
-        price: 222,
-        image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1332&q=80",
-        amenities: ["Breakfast", "Pool", "Free WiFi"],
-    },
-    {
-        id: 5,
-        name: "Hotelux La Playa Alemain",
-        location: "Alemain",
-        rating: 4.4,
-        price: 222,
-        image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-        amenities: ["Breakfast", "Pool", "Free WiFi"],
-    },
-    {
-        id: 6,
-        name: "Hotelux La Playa Alemain",
-        location: "Alemain",
-        rating: 4.4,
-        price: 222,
-        image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-        amenities: ["Breakfast", "Pool", "Free WiFi"],
-    },
-];
+export const hotels: HotelProps[] = Array.from({ length: 100 }, (_, index) => ({
+    id: index + 1,
+    name: faker.location.street(),
+    location: faker.location.city(),
+    rating: faker.number.int({ min: 1, max: 5 }),
+    price: faker.number.int({ min: 100, max: 1000 }),
+    image: `https://picsum.photos/800/600?random=${index}`,
+    amenities: Array.from(
+        { length: faker.number.int({ min: 1, max: 5 }) },
+        () => ({
+            title: ["Breakfast", "Pool", "Free WiFi", "Free Parking"][
+                faker.number.int({ min: 0, max: 3 })
+            ],
+            icon: [
+                "fa-solid fa-bed",
+                "fa-solid fa-bath",
+                "fa-solid fa-wifi",
+                "fa-solid fa-car",
+            ][faker.number.int({ min: 0, max: 3 })],
+        })
+    ),
+}));

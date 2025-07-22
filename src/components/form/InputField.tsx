@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type InputHTMLAttributes } from "react";
 import Calendar from "../ui/Calendar";
 import {
     type Control,
@@ -12,14 +12,19 @@ interface FormInputProps<T extends FieldValues> {
     control: Control<T>;
     name: Path<T>;
     placeholder: string;
-    type: string;
-    icon: React.ReactNode;
+    type: InputHTMLAttributes<HTMLInputElement>["type"];
+    icon?: React.ReactNode;
     required?: boolean;
     requiredLabel?: string;
     disabled?: boolean;
     error?: boolean;
     inputClassName?: string;
     readOnly?: boolean;
+    valueToSet?: string | number; // Value to set in array fields for checkboxes
+    amenity?: {
+        icon: string;
+        title: string;
+    };
 }
 
 export default function InputField<T extends FieldValues>({
@@ -34,6 +39,8 @@ export default function InputField<T extends FieldValues>({
     inputClassName = "",
     name,
     readOnly = false,
+    valueToSet,
+    amenity,
 }: FormInputProps<T>) {
     const [showPassword, setShowPassword] = useState(false);
     const isPasswordField = type === "password";
@@ -155,27 +162,30 @@ export default function InputField<T extends FieldValues>({
                                     // Set both start and end dates in the field value
                                     const dateRange = {
                                         startDate: startDate,
-                                        endDate: date
+                                        endDate: date,
                                     };
-                                    
+
                                     // Update state and form field
                                     setEndDate(date);
                                     field.onChange(dateRange);
-                                    
-                                    console.log("Date range selected:", dateRange);
+
+                                    console.log(
+                                        "Date range selected:",
+                                        dateRange
+                                    );
                                 }
                             } else {
                                 // Create date range with only start date
                                 const dateRange = {
                                     startDate: date,
-                                    endDate: null
+                                    endDate: null,
                                 };
-                                
+
                                 // Update state and form field
                                 setStartDate(date);
                                 setEndDate(null); // Reset end date when selecting a new start date
                                 field.onChange(dateRange);
-                                
+
                                 console.log("Start date selected:", dateRange);
                             }
                         };
@@ -187,7 +197,7 @@ export default function InputField<T extends FieldValues>({
                             // Update the form field with both dates
                             field.onChange({
                                 startDate: start,
-                                endDate: end
+                                endDate: end,
                             });
                         };
 
@@ -210,16 +220,16 @@ export default function InputField<T extends FieldValues>({
                                     // Prevent default behavior and stop propagation
                                     e.preventDefault();
                                     e.stopPropagation();
-                                    
+
                                     // Prevent any form submission by stopping event bubbling completely
                                     const event = e.nativeEvent;
                                     if (event.stopImmediatePropagation) {
                                         event.stopImmediatePropagation();
                                     }
-                                    
+
                                     // Toggle calendar visibility
                                     toggleCalendar();
-                                    
+
                                     // Return false to prevent any form submission
                                     return false;
                                 }}
@@ -245,7 +255,9 @@ export default function InputField<T extends FieldValues>({
                                             e.preventDefault();
                                             e.stopPropagation();
                                             const event = e.nativeEvent;
-                                            if (event.stopImmediatePropagation) {
+                                            if (
+                                                event.stopImmediatePropagation
+                                            ) {
                                                 event.stopImmediatePropagation();
                                             }
                                         }}
@@ -280,6 +292,145 @@ export default function InputField<T extends FieldValues>({
                                     disabled={disabled}
                                 />
                             </div>
+                        );
+                    } else if (type === "checkbox") {
+                        // Handle array fields with valueToSet
+                        if (
+                            valueToSet !== undefined &&
+                            Array.isArray(field.value)
+                        ) {
+                            const isChecked = field.value.includes(valueToSet);
+
+                            const handleToggle = () => {
+                                if (isChecked) {
+                                    // Remove value from array
+                                    const newValue = field.value.filter(
+                                        (v: string | number) => v !== valueToSet
+                                    );
+                                    field.onChange(newValue);
+                                } else {
+                                    // Add value to array
+                                    field.onChange([
+                                        ...field.value,
+                                        valueToSet,
+                                    ]);
+                                }
+                            };
+
+                            if (amenity)
+                                return (
+                                    <span
+                                        onClick={handleToggle}
+                                        className={`group px-2 py-1 cursor-pointer truncate ${
+                                            isChecked
+                                                ? "bg-primary-50 border border-primary-500"
+                                                : "bg-white border border-gray-200"
+                                        } text-xs text-gray-700 rounded-full hover:bg-primary-50 hover:text-primary-500 transition-colors duration-300 ease-in-out`}
+                                    >
+                                        {amenity.icon && (
+                                            <i
+                                                className={`${amenity.icon} ${
+                                                    isChecked
+                                                        ? "text-primary-500"
+                                                        : "text-gray-500"
+                                                } mr-0.5 group-hover:text-primary-500 transition-colors duration-300 ease-in-out`}
+                                            />
+                                        )}{" "}
+                                        {icon && icon} {amenity.title}
+                                    </span>
+                                );
+
+                            return (
+                                <label
+                                    onClick={handleToggle}
+                                    className="flex items-center cursor-pointer"
+                                >
+                                    <div
+                                        className={`flex h-4 w-4 items-center justify-center rounded border cursor-pointer ${
+                                            isChecked
+                                                ? "border-primary-500 bg-primary-500"
+                                                : "border-dark-200 bg-white"
+                                        }`}
+                                        role="checkbox"
+                                        aria-checked={
+                                            isChecked ? "true" : "false"
+                                        }
+                                        aria-label="Select row"
+                                        title="Select row"
+                                    >
+                                        {isChecked && (
+                                            <svg
+                                                className="w-3 h-3 text-white"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
+                                        )}
+                                    </div>
+
+                                    {placeholder && (
+                                        <span className="ml-2 text-sm text-gray-700">
+                                            {placeholder}
+                                        </span>
+                                    )}
+                                </label>
+                            );
+                        } else {
+                            // Regular boolean checkbox
+                            return (
+                                <label className="flex items-center cursor-pointer">
+                                    <div
+                                        className={`flex h-4 w-4 items-center justify-center rounded border cursor-pointer ${
+                                            field.value
+                                                ? "border-primary-500 bg-primary-500"
+                                                : "border-dark-200 bg-white"
+                                        }`}
+                                        onClick={() =>
+                                            field.onChange(!field.value)
+                                        }
+                                        role="checkbox"
+                                        aria-checked={
+                                            field.value ? "true" : "false"
+                                        }
+                                        aria-label="Select row"
+                                        title="Select row"
+                                    >
+                                        {field.value && (
+                                            <svg
+                                                className="w-3 h-3 text-white"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
+                                        )}
+                                    </div>
+
+                                    {placeholder && (
+                                        <span className="ml-2 text-sm text-gray-700">
+                                            {placeholder}
+                                        </span>
+                                    )}
+                                </label>
+                            );
+                        }
+                    } else if (type === "amenities" && amenity) {
+                        return (
+                            <span className="px-2 py-1 bg-primary-50 border border-primary-500 text-xs text-gray-700 rounded-full">
+                                <i
+                                    className={`${amenity.icon} text-primary-500 mr-0.5`}
+                                />{" "}
+                                {amenity.title}
+                            </span>
                         );
                     } else {
                         return (
