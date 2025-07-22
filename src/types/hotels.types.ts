@@ -12,11 +12,11 @@ export type Hotel = {
 
 export type HotelsState = {
     hotels: Hotel[];
+    isLoading: boolean;
     error: string | null;
     selectedCityCode: string | null;
     getHotelCodesByCity: (cityCode: string) => Promise<any>;
     setHotels: (hotels: Hotel[]) => void;
-    setLoading: (isLoading: boolean) => void;
     setError: (error: string | null) => void;
     setSelectedCityCode: (cityCode: string | null) => void;
 };

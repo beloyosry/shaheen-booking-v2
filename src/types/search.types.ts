@@ -10,6 +10,7 @@ export type SearchValues = {
 export type SearchState = {
     searchParams: SearchValues | null;
     searchResults: any[];
+    isLoading: boolean;
     error: string | null;
     setSearchParams: (params: SearchValues) => void;
     setSearchResults: (results: any[]) => void;

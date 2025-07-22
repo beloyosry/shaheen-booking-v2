@@ -6,7 +6,7 @@ import { useAuthStore } from "../store/auth.store";
  * This allows components outside of React to trigger auth state changes
  */
 export const useAuthStateListener = () => {
-    const { logout } = useAuthStore();
+    const { logout, isLoading } = useAuthStore();
 
     useEffect(() => {
         // Function to handle storage changes
@@ -34,4 +34,6 @@ export const useAuthStateListener = () => {
             window.removeEventListener("storage", handleStorageChange);
         };
     }, [logout]);
+
+    return { isLoading };
 };

@@ -1,31 +1,29 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { ENDPOINTS } from "../lib/endpoints";
-import { useLoadingStore } from "./loading.store";
 import type { HotelsState } from "../types";
 
 export const useHotelsStore = create<HotelsState>()(
     persist(
         (set, get) => ({
             hotels: [],
+            isLoading: false,
             error: null,
             selectedCityCode: null,
 
             setHotels: (hotels) => set({ hotels }),
-            setLoading: (isLoading) =>
-                useLoadingStore.getState().setIsLoading(isLoading),
             setError: (error) => set({ error }),
             setSelectedCityCode: (cityCode) =>
                 set({ selectedCityCode: cityCode }),
 
             getHotelCodesByCity: async (cityCode) => {
-                const { setHotels, setLoading, setError, setSelectedCityCode } =
+                const { setHotels, setError, setSelectedCityCode } =
                     get();
                 const previousHotels = get().hotels;
 
                 try {
                     // Set loading state
-                    setLoading(true);
+                    set({ isLoading: true });
                     setError(null);
 
                     // Make API call
@@ -56,7 +54,7 @@ export const useHotelsStore = create<HotelsState>()(
                     }
 
                     // Clear loading state
-                    setLoading(false);
+                    set({ isLoading: false });
 
                     return response.data;
                 } catch (error: any) {
@@ -69,7 +67,7 @@ export const useHotelsStore = create<HotelsState>()(
                     setError(error.message || "Failed to fetch hotel codes");
 
                     // Clear loading state
-                    setLoading(false);
+                    set({ isLoading: false });
 
                     return {
                         success: false,

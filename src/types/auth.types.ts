@@ -2,6 +2,7 @@ export type AuthState = {
     user: User | null;
     isAuthenticated: boolean;
     error: string | null;
+    isLoading: boolean;
 
     login: (credentials: LoginData) => Promise<void>;
     register: (credentials: RegisterData) => Promise<void>;

@@ -3,12 +3,11 @@ import "./Hotels.css";
 
 import { Link } from "react-router-dom";
 import { useHotelsStore } from "../../store/hotels.store";
-import { useLoadingStore } from "../../store/loading.store";
 
 function Hotels() {
     // Get state and actions from Zustand stores
     const { hotels, getHotelCodesByCity } = useHotelsStore();
-    const { isLoading, setIsLoading } = useLoadingStore();
+    const [isLoading, setIsLoading] = useState(false);
 
     const [retryCount, setRetryCount] = useState(0);
     const [lastCityCode, setLastCityCode] = useState<string | null>(null);

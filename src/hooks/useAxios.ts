@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useLoadingStore } from "../store/loading.store";
+import { useEffect, useState } from "react";
 import { usePopupStore } from "../store/pop-up.store";
 import api from "../lib/api";
 
@@ -12,18 +11,18 @@ import api from "../lib/api";
  * Uses the centralized api instance from api.ts
  */
 const useAxios = () => {
-    const { setIsLoading } = useLoadingStore();
+    const [isLoadingApi, setIsLoadingApi] = useState(false);
     const { setPopupVisible } = usePopupStore();
 
     useEffect(() => {
         // Request interceptor for loading state
         const requestInterceptor = api.interceptors.request.use(
             (config) => {
-                setIsLoading(true);
+                setIsLoadingApi(true);
                 return config;
             },
             (error) => {
-                setIsLoading(false);
+                setIsLoadingApi(false);
                 return Promise.reject(error);
             }
         );
@@ -31,7 +30,7 @@ const useAxios = () => {
         // Response interceptor for loading state and error handling
         const responseInterceptor = api.interceptors.response.use(
             (response) => {
-                setIsLoading(false);
+                setIsLoadingApi(false);
                 return response;
             },
             (error) => {
@@ -52,7 +51,7 @@ const useAxios = () => {
                     });
                 }
 
-                setIsLoading(false);
+                setIsLoadingApi(false);
                 return Promise.reject(error);
             }
         );
@@ -62,9 +61,9 @@ const useAxios = () => {
             api.interceptors.request.eject(requestInterceptor);
             api.interceptors.response.eject(responseInterceptor);
         };
-    }, [setIsLoading, setPopupVisible]);
+    }, [setIsLoadingApi, setPopupVisible]);
 
-    return { api };
+    return { api, isLoadingApi };
 };
 
 export default useAxios;

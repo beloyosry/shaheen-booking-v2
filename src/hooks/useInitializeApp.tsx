@@ -3,7 +3,7 @@ import { useAuthStore } from "../store/auth.store";
 import { useRegionStore } from "../store/regions.store";
 
 export const useInitializeApp = () => {
-    const { isAuthenticated, fetchProfile } = useAuthStore();
+    const { isAuthenticated, fetchProfile, isLoading } = useAuthStore();
     const { initializeRegions } = useRegionStore();
     const initializationDone = useRef(false);
 
@@ -47,4 +47,6 @@ export const useInitializeApp = () => {
         // No cleanup needed
         return () => {};
     }, []);
+
+    return { isLoading };
 };

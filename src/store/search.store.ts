@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import axios from "axios";
-import { useLoadingStore } from "./loading.store";
 import type { SearchState } from "../types";
 
 export const useSearchStore = create<SearchState>()(
@@ -10,6 +9,7 @@ export const useSearchStore = create<SearchState>()(
             searchParams: null,
             searchResults: [],
             error: null,
+            isLoading: false,
 
             setSearchParams: (params) => set({ searchParams: params }),
             setSearchResults: (results) => set({ searchResults: results }),
@@ -17,10 +17,9 @@ export const useSearchStore = create<SearchState>()(
 
             searchHotels: async (values) => {
                 const { setSearchParams, setSearchResults, setError } = get();
-                const { setIsLoading } = useLoadingStore.getState();
 
                 try {
-                    setIsLoading(true);
+                    set({ isLoading: true });
                     setError(null);
                     setSearchParams(values);
 
@@ -40,7 +39,7 @@ export const useSearchStore = create<SearchState>()(
                     setError("An error occurred while searching for hotels");
                     return Promise.reject(error);
                 } finally {
-                    setIsLoading(false);
+                    set({ isLoading: false });
                 }
             },
         }),

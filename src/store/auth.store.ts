@@ -3,7 +3,6 @@ import { create } from "zustand";
 import type { AuthState } from "../types";
 import { ENDPOINTS } from "../lib/endpoints";
 import { getCookie, setSecureCookie, handleLogOut } from "../utils";
-import { useLoadingStore } from "./loading.store";
 
 export const useAuthStore = create<AuthState>()(
     persist(
@@ -11,12 +10,10 @@ export const useAuthStore = create<AuthState>()(
             user: null,
             isAuthenticated: false,
             error: null,
+            isLoading: false,
 
             login: async (credentials) => {
-                // Use loading store to handle loading state
-                const setIsLoading = useLoadingStore.getState().setIsLoading;
-                setIsLoading(true);
-                set({ error: null });
+                set({ error: null, isLoading: true });
 
                 try {
                     const response = await ENDPOINTS.auth.login(credentials);
@@ -27,21 +24,19 @@ export const useAuthStore = create<AuthState>()(
                         user,
                         isAuthenticated: true,
                         error: null,
+                        isLoading: false,
                     });
-                    setIsLoading(false);
                 } catch (err: any) {
                     set({
                         error: err?.response?.data?.message || "Login failed",
+                        isLoading: false,
                     });
-                    setIsLoading(false);
                     throw err; // Let caller handle if needed
                 }
             },
 
             register: async (credentials) => {
-                const setIsLoading = useLoadingStore.getState().setIsLoading;
-                setIsLoading(true);
-                set({ error: null });
+                set({ error: null, isLoading: true });
                 try {
                     const response = await ENDPOINTS.auth.register(credentials);
                     const { user, token } = response.data.data;
@@ -50,10 +45,9 @@ export const useAuthStore = create<AuthState>()(
                         user,
                         isAuthenticated: true,
                         error: null,
+                        isLoading: false,
                     });
-                    setIsLoading(false);
                 } catch (err: any) {
-                    setIsLoading(false);
                     set({
                         error:
                             err?.response?.data?.message ||
@@ -64,8 +58,7 @@ export const useAuthStore = create<AuthState>()(
             },
 
             logout: async () => {
-                const setIsLoading = useLoadingStore.getState().setIsLoading;
-                setIsLoading(true);
+                set({ isLoading: true });
                 try {
                     await ENDPOINTS.auth.logout();
                 } catch (err) {
@@ -76,13 +69,12 @@ export const useAuthStore = create<AuthState>()(
                     user: null,
                     isAuthenticated: false,
                     error: null,
+                    isLoading: false,
                 });
-                setIsLoading(false);
             },
 
             fetchProfile: async () => {
-                const setIsLoading = useLoadingStore.getState().setIsLoading;
-                setIsLoading(true);
+                set({ isLoading: true });
                 const token = getCookie("shaheen_token");
                 if (!token) {
                     // If no token is found, log the user out
@@ -90,8 +82,8 @@ export const useAuthStore = create<AuthState>()(
                         error: "No token found",
                         user: null,
                         isAuthenticated: false, // Set to false to trigger logout
+                        isLoading: false,
                     });
-                    setIsLoading(false);
 
                     return null;
                 }
@@ -103,8 +95,8 @@ export const useAuthStore = create<AuthState>()(
                         user: userData,
                         isAuthenticated: true,
                         error: null,
+                        isLoading: false,
                     });
-                    setIsLoading(false);
                     return userData;
                 } catch (err: any) {
                     // Check if it's an authentication error (401 or 403)
@@ -120,8 +112,8 @@ export const useAuthStore = create<AuthState>()(
                         isAuthenticated: isAuthError ? false : undefined,
                         // Clear user data for auth errors
                         user: isAuthError ? null : undefined,
+                        isLoading: false,
                     });
-                    setIsLoading(false);
 
                     // Show message for auth errors
                     if (isAuthError) {

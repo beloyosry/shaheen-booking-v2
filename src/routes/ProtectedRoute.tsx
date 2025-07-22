@@ -4,15 +4,13 @@ import { useAuthStore } from "../store/auth.store";
 import type { PropsWithChildren } from "react";
 import Loading from "../components/ui/Loading";
 import MainLayout from "../layout/MainLayout";
-import { useLoadingStore } from "../store/loading.store";
 
 interface ProtectedRouteProps extends PropsWithChildren {
     role?: string[];
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, role }) => {
-    const { user, isAuthenticated } = useAuthStore();
-    const { isLoading } = useLoadingStore();
+    const { user, isAuthenticated, isLoading } = useAuthStore();
 
     if (isLoading) return <Loading />;
 

@@ -42,6 +42,7 @@ export type RegionState = {
     cities: City[];
     userCountry: UserCountry | null;
     selectedCountry: Country | null;
+    isLoading: boolean;
     error: string | null;
     isInitialized: boolean;
     isInitializing: boolean; // Flag to track initialization in progress

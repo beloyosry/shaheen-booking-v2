@@ -1,15 +1,11 @@
 import stroke from "../../assets/loading/stroke.svg";
 import plane from "../../assets/loading/plane.png";
 import logo from "/images/logo.png";
-import { useLoadingStore } from "../../store/loading.store";
 
 function Loading() {
-    const { isLoading } = useLoadingStore();
     return (
         <div
-            className={`fixed ${
-                !isLoading ? "opacity-0 !z-[-1]" : "opacity-100 z-[1000]"
-            } w-full bg-primary-500 h-[100vh]`}
+            className={`fixed opacity-100 z-[1000] w-full bg-primary-500 h-[100vh]`}
         >
             <div
                 className="absolute left-0 bottom-0 w-[169px] h-[169px] rounded-full bg-white"
@@ -34,11 +30,7 @@ function Loading() {
                 alt=""
             />
 
-            <img
-                src={plane}
-                className={`w-fit absolute ${isLoading ? "plane-loader" : ""}`}
-                alt=""
-            />
+            <img src={plane} className={`w-fit absolute plane-loader`} alt="" />
 
             <img
                 src={logo}

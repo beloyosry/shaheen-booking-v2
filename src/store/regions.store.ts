@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { ENDPOINTS } from "../lib/endpoints";
-import { useLoadingStore } from "./loading.store";
 import type { City, Country, Region, RegionState } from "../types";
 import { useHotelsStore } from "./hotels.store";
 
@@ -19,6 +18,7 @@ export const useRegionStore = create<RegionState>()(
             cities: [],
             userCountry: null,
             selectedCountry: null,
+            isLoading: false,
             error: null,
             isInitialized: false,
             isLoadingCountries: false,
@@ -38,9 +38,7 @@ export const useRegionStore = create<RegionState>()(
                         "User country request already in progress, waiting for it to complete"
                     );
                     try {
-                        const setIsLoading =
-                            useLoadingStore.getState().setIsLoading;
-                        setIsLoading(true);
+                        set({ isLoading: true });
                         await userCountryRequestInProgress;
                         return get().userCountry;
                     } catch (error) {
@@ -50,9 +48,7 @@ export const useRegionStore = create<RegionState>()(
                         );
                         return null;
                     } finally {
-                        const setIsLoading =
-                            useLoadingStore.getState().setIsLoading;
-                        setIsLoading(false);
+                        set({ isLoading: false });
                     }
                 }
 
@@ -65,9 +61,7 @@ export const useRegionStore = create<RegionState>()(
                 }
 
                 try {
-                    const setIsLoading =
-                        useLoadingStore.getState().setIsLoading;
-                    setIsLoading(true);
+                    set({ isLoading: true });
                     set({ isLoadingUserCountry: true });
 
                     // Create a promise for this request
@@ -95,9 +89,7 @@ export const useRegionStore = create<RegionState>()(
                     });
                     return null;
                 } finally {
-                    const setIsLoading =
-                        useLoadingStore.getState().setIsLoading;
-                    setIsLoading(false);
+                    set({ isLoading: false });
                     // Clear the promise when done
                     userCountryRequestInProgress = null;
                 }
@@ -109,9 +101,7 @@ export const useRegionStore = create<RegionState>()(
 
             setSelectedCountry: async (country) => {
                 try {
-                    const setIsLoading =
-                        useLoadingStore.getState().setIsLoading;
-                    setIsLoading(true);
+                    set({ isLoading: true });
                     // First update the selected country immediately to improve UI responsiveness
                     set({
                         selectedCountry: country,
@@ -147,9 +137,7 @@ export const useRegionStore = create<RegionState>()(
                         error: "Failed to fetch cities for selected country",
                     });
                 } finally {
-                    const setIsLoading =
-                        useLoadingStore.getState().setIsLoading;
-                    setIsLoading(false);
+                    set({ isLoading: false });
                 }
             },
 
@@ -171,9 +159,7 @@ export const useRegionStore = create<RegionState>()(
                 }
 
                 try {
-                    const setIsLoading =
-                        useLoadingStore.getState().setIsLoading;
-                    setIsLoading(true);
+                    set({ isLoading: true });
                     // Set initialization state to prevent duplicate calls
                     set({ isInitialized: false, isInitializing: true });
                     console.log("Starting regions initialization");
@@ -287,9 +273,7 @@ export const useRegionStore = create<RegionState>()(
                     });
                     console.error("Error initializing regions:", error);
                 } finally {
-                    const setIsLoading =
-                        useLoadingStore.getState().setIsLoading;
-                    setIsLoading(false);
+                    set({ isLoading: false });
                 }
             },
 
@@ -309,9 +293,7 @@ export const useRegionStore = create<RegionState>()(
                         "Regions request already in progress, waiting for it to complete"
                     );
                     try {
-                        const setIsLoading =
-                            useLoadingStore.getState().setIsLoading;
-                        setIsLoading(true);
+                        set({ isLoading: true });
                         await regionsRequestInProgress;
                         return get().regions;
                     } catch (error) {
@@ -321,16 +303,12 @@ export const useRegionStore = create<RegionState>()(
                         );
                         return [];
                     } finally {
-                        const setIsLoading =
-                            useLoadingStore.getState().setIsLoading;
-                        setIsLoading(false);
+                        set({ isLoading: false });
                     }
                 }
 
                 try {
-                    const setIsLoading =
-                        useLoadingStore.getState().setIsLoading;
-                    setIsLoading(true);
+                    set({ isLoading: true });
                     // Create a promise for this request
                     regionsRequestInProgress = ENDPOINTS.regions.getRegions();
                     const response = await regionsRequestInProgress;
@@ -358,9 +336,7 @@ export const useRegionStore = create<RegionState>()(
                     set({ error: "Failed to fetch regions" });
                     return [];
                 } finally {
-                    const setIsLoading =
-                        useLoadingStore.getState().setIsLoading;
-                    setIsLoading(false);
+                    set({ isLoading: false });
                     // Clear the promise when done
                     regionsRequestInProgress = null;
                 }
@@ -382,10 +358,6 @@ export const useRegionStore = create<RegionState>()(
                 }
 
                 try {
-                    const setIsLoading =
-                        useLoadingStore.getState().setIsLoading;
-                    setIsLoading(true);
-                    console.log("Fetching countries list from API");
                     set({ isLoadingCountries: true });
 
                     const response = await ENDPOINTS.regions.getCountries();
@@ -423,9 +395,7 @@ export const useRegionStore = create<RegionState>()(
                         isLoadingCountries: false,
                     });
                 } finally {
-                    const setIsLoading =
-                        useLoadingStore.getState().setIsLoading;
-                    setIsLoading(false);
+                    set({ isLoadingCountries: false });
                 }
             },
 
@@ -448,9 +418,7 @@ export const useRegionStore = create<RegionState>()(
                         "already in progress, waiting for it to complete"
                     );
                     try {
-                        const setIsLoading =
-                            useLoadingStore.getState().setIsLoading;
-                        setIsLoading(true);
+                        set({ isLoadingCountries: true });
                         await existingRequest;
                         return get().cities;
                     } catch (error) {
@@ -460,16 +428,12 @@ export const useRegionStore = create<RegionState>()(
                         );
                         return [];
                     } finally {
-                        const setIsLoading =
-                            useLoadingStore.getState().setIsLoading;
-                        setIsLoading(false);
+                        set({ isLoadingCountries: false });
                     }
                 }
 
                 try {
-                    const setIsLoading =
-                        useLoadingStore.getState().setIsLoading;
-                    setIsLoading(true);
+                    set({ isLoadingCountries: true });
                     // Create a promise for this request
                     citiesRequestInProgress[country_code] =
                         ENDPOINTS.regions.getCities(country_code);
@@ -483,9 +447,7 @@ export const useRegionStore = create<RegionState>()(
                     set({ error: "Failed to fetch cities" });
                     return [];
                 } finally {
-                    const setIsLoading =
-                        useLoadingStore.getState().setIsLoading;
-                    setIsLoading(false);
+                    set({ isLoadingCountries: false });
                     // Clear the promise when done
                     delete citiesRequestInProgress[country_code];
                 }

@@ -8,11 +8,12 @@ import useAxios from "./hooks/useAxios";
 import { localeStore } from "./store/locale.store";
 
 function App() {
-    useAuthStateListener();
-    useInitializeApp();
-    useAxios();
+    const { isLoading } = useAuthStateListener();
+    const { isLoading: isLoadingApp } = useInitializeApp();
+    const { isLoadingApi } = useAxios();
     const { locale } = localeStore();
-    console.log(locale);
+
+    if (isLoadingApi || isLoading || isLoadingApp) return <Loading />;
 
     return (
         <div

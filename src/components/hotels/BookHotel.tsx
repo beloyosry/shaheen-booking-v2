@@ -2,7 +2,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import DatePicker from "../DatePicker";
 import DropDown from "../DropDown";
 import { useEffect, useState } from "react";
-import { useLoadingStore } from "../../store/loading.store";
 import { useHotelsStore } from "../../store/hotels.store";
 import { useSearchStore } from "../../store/search.store";
 import { format } from "date-fns";
@@ -15,7 +14,6 @@ import type { Country } from "../../types";
 function BookHotel() {
     const { countries, selectedCountry, cities, regions } = useRegionStore();
     const { getHotelCodesByCity } = useHotelsStore();
-    // const { isLoading, setIsLoading } = useLoadingStore();
     const pathname = useLocation();
     const navigate = useNavigate();
 
