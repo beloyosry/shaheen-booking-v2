@@ -47,7 +47,7 @@ export default function FlightSearchForm({
     };
     return (
         <form onSubmit={handleSubmit(handleFormSubmit)} className="p-4">
-            <div className="flex justify-start gap-4 mb-4">
+            <div className="flex flex-wrap justify-start gap-2 sm:gap-4 mb-4">
                 <TripOption
                     label="Round-trip"
                     isActive={tripType === "roundtrip"}
@@ -98,58 +98,69 @@ export default function FlightSearchForm({
                 </div>
             </div>
 
-            <div className="w-full flex justify-between items-center gap-4">
-                <div className="relative flex items-center gap-8">
-                    <InputField
-                        placeholder="Leaving From?"
-                        type="text"
-                        icon={
-                            <i className="far fa-location-dot text-primary-500" />
-                        }
-                        name="from"
-                        control={control}
-                    />
-
-                    <div className="absolute left-[45%] flex flex-col justify-center items-center bg-white w-10 h-10 rounded-full">
-                        <div className="flex items-center gap-2 text-primary-500">
-                            <i className="far fa-arrow-left"></i>
+            <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4">
+                <div className="w-full md:w-auto relative">
+                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 w-full">
+                        <div className="w-full sm:w-auto">
+                            <InputField
+                                placeholder="Leaving From?"
+                                type="text"
+                                icon={
+                                    <i className="far fa-location-dot text-primary-500" />
+                                }
+                                name="from"
+                                control={control}
+                            />
                         </div>
-                        <div className="flex items-center gap-2 text-primary-500">
-                            <i className="far fa-arrow-right"></i>
+
+                        <div className="hidden sm:flex absolute left-[45%] flex-col justify-center items-center bg-white w-10 h-10 rounded-full">
+                            <div className="flex items-center gap-2 text-primary-500">
+                                <i className="far fa-arrow-left"></i>
+                            </div>
+                            <div className="flex items-center gap-2 text-primary-500">
+                                <i className="far fa-arrow-right"></i>
+                            </div>
+                        </div>
+
+                        <div className="w-full sm:w-auto">
+                            <InputField
+                                placeholder="Going To?"
+                                type="text"
+                                icon={
+                                    <i className="far fa-location-dot text-primary-500" />
+                                }
+                                name="to"
+                                control={control}
+                            />
                         </div>
                     </div>
+                </div>
 
+                <div className="w-full md:w-auto">
                     <InputField
-                        placeholder="Going To?"
-                        type="text"
+                        placeholder="Dates"
+                        type="date"
                         icon={
-                            <i className="far fa-location-dot text-primary-500" />
+                            <i className="far fa-calendar-days text-primary-500" />
                         }
-                        name="to"
+                        name="date"
                         control={control}
                     />
                 </div>
 
-                <InputField
-                    placeholder="Dates"
-                    type="date"
-                    icon={
-                        <i className="far fa-calendar-days text-primary-500" />
-                    }
-                    name="date"
-                    control={control}
-                />
-
-                <InputField
-                    placeholder="Travelers"
-                    type="number"
-                    icon={<i className="far fa-user text-primary-500" />}
-                    name="travelers"
-                    control={control}
-                />
+                <div className="w-full md:w-auto">
+                    <InputField
+                        placeholder="Travelers"
+                        type="number"
+                        icon={<i className="far fa-user text-primary-500" />}
+                        name="travelers"
+                        control={control}
+                    />
+                </div>
+                
                 <button
                     type="submit"
-                    className="bg-primary-500 text-white px-8 py-3 rounded-2xl font-medium"
+                    className="w-full md:w-auto bg-primary-500 text-white px-8 py-3 rounded-2xl font-medium"
                 >
                     Search
                 </button>

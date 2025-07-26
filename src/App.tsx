@@ -11,14 +11,14 @@ function App() {
     const { isLoading } = useAuthStateListener();
     const { isLoading: isLoadingApp } = useInitializeApp();
     const { isLoadingApi } = useAxios();
-    const { locale } = localeStore();
+    const { isArabic } = localeStore();
 
     if (isLoadingApi || isLoading || isLoadingApp) return <Loading />;
 
     return (
         <div
             className="w-full max-w-full overflow-x-hidden"
-            dir={locale.split("-")[0].toUpperCase() === "AR" ? "rtl" : "ltr"}
+            dir={isArabic ? "rtl" : "ltr"}
         >
             <Suspense fallback={<Loading />}>
                 <AppRoutes />

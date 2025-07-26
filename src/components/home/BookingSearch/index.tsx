@@ -8,6 +8,7 @@ import Loading from "../../ui/Loading";
 import type { FlightForm, HotelsForm, TripTypes } from "./types";
 import HotelSearchForm from "./HotelSearchForm";
 import FlightSearchForm from "./FlightSearchForm";
+import { localeStore } from "../../../store/locale.store";
 
 const dateRangeSchema = z.object({
     startDate: z.date().nullable(),
@@ -65,6 +66,7 @@ const BookingButton = ({
 
 function BookingSearch() {
     const navigate = useNavigate();
+    const { isArabic } = localeStore();
     const [isLoading, setIsLoading] = useState(false);
     const [activeBtn, setActiveBtn] = useState(0);
     const [tripType, setTripType] = useState<TripTypes>("roundtrip");
@@ -210,9 +212,15 @@ function BookingSearch() {
     if (isLoading) return <Loading />;
 
     return (
-        <div className="w-full lg:h-fit sm:mb-[118px] relative z-[100] px-3 mt-10 sm:px-0">
+        <div className="w-full lg:h-fit sm:mb-[118px] relative z-[100] px-3 mt-10 sm:px-0 mx-auto">
             {/* Container for tabs */}
-            <div className="flex w-fit bg-white rounded-tl-lg rounded-tr-4xl rounded-bl-lg">
+            <div
+                className={`flex w-fit mx-auto sm:mx-0 bg-white ${
+                    isArabic
+                        ? "rounded-tr-lg rounded-tl-4xl rounded-br-lg"
+                        : "rounded-tl-lg rounded-tr-4xl rounded-bl-lg"
+                }`}
+            >
                 {/* Stays tab */}
                 <BookingButton
                     activeBtn={activeBtn}
@@ -220,7 +228,11 @@ function BookingSearch() {
                     btnValue={1}
                     title="Stays"
                     icon={<span className="text-lg">🏨</span>}
-                    btnClassNames="rounded-tl-lg rounded-br-2xl"
+                    btnClassNames={`${
+                        isArabic
+                            ? " rounded-tr-lg rounded-bl-2xl"
+                            : " rounded-tl-lg rounded-br-2xl"
+                    }`}
                 />
 
                 {/* Flights tab */}
@@ -230,12 +242,22 @@ function BookingSearch() {
                     btnValue={0}
                     title="Flights"
                     icon={<span className="text-lg">✈️</span>}
-                    btnClassNames="rounded-tr-4xl rounded-bl-2xl"
+                    btnClassNames={`${
+                        isArabic
+                            ? "rounded-tl-4xl rounded-br-2xl"
+                            : "rounded-tr-4xl rounded-bl-2xl"
+                    }`}
                 />
             </div>
 
             {/* Container for the selected booking component */}
-            <div className="bg-white rounded-b-3xl rounded-tr-3xl shadow-md">
+            <div
+                className={`bg-white ${
+                    isArabic
+                        ? "rounded-b-3xl rounded-tl-3xl"
+                        : "rounded-b-3xl rounded-tr-3xl"
+                }  shadow-md overflow-x-hidden`}
+            >
                 {/* Render Hotel search if activeBtn is 1 */}
                 {activeBtn === 1 ? (
                     <HotelSearchForm

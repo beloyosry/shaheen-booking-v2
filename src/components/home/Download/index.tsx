@@ -3,33 +3,37 @@ import AppBg from "./add-bg.png";
 
 function Download() {
     return (
-        <div className="h-screen w-full bg-white flex flex-col items-center justify-center px-20">
-            <div className="flex justify-between items-center relative w-full bg-secondary-500 rounded-t-2xl rounded-bl-2xl rounded-br-[15rem] overflow-hidden">
+        <div className="min-h-screen w-full bg-white flex flex-col items-center justify-center px-4 sm:px-8 md:px-12 lg:px-10 py-16">
+            <div className="flex flex-col lg:flex-row justify-between items-center relative w-full bg-secondary-500 rounded-t-2xl rounded-bl-2xl rounded-br-[5rem] md:rounded-br-[10rem] lg:rounded-br-[15rem] overflow-hidden">
                 {/* Background */}
                 <img
                     src={AppBg}
                     alt=""
-                    className="absolute top-0 left-0 w-full h-full object-cover z-0"
+                    className="absolute top-0 left-0 w-full h-full object-fill z-0"
                 />
 
-                <div className="z-10">
-                    <img src={AppScreenShoot} alt="App Screen Shoot" />
+                <div className="z-10 w-full lg:w-auto flex justify-center py-6 lg:py-0">
+                    <img
+                        src={AppScreenShoot}
+                        alt="App Screen Shoot"
+                        className="max-w-[200px] sm:max-w-[250px] md:max-w-[300px] lg:max-w-full"
+                    />
                 </div>
-                <div className="flex flex-col items-center gap-2 pr-40 z-10">
+                <div className="flex flex-col items-center gap-2 px-4 pb-8 lg:pb-0 lg:pr-10 xl:pr-40 z-10 text-center lg:text-left">
                     <h1
-                        className="text-white text-6xl font-bold"
+                        className="text-white text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold"
                         style={{
                             fontFamily: "Playfair Display, serif",
                         }}
                     >
                         Get The App now!
                     </h1>
-                    <p className="text-white text-2xl">
+                    <p className="text-white text-lg sm:text-xl xl:text-2xl mb-4">
                         Get what you need, when you need it
                     </p>
 
                     {/* Stores Buttons */}
-                    <div className="flex justify-between items-center gap-2">
+                    <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                         <button
                             type="button"
                             className="flex items-center justify-center w-48 mt-3 text-white bg-black h-14 rounded-xl"

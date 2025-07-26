@@ -22,38 +22,44 @@ export default function HotelSearchForm({
 }: Props) {
     return (
         <form onSubmit={handleSubmit(handleFormSubmit)} className="p-4">
-            <div className="w-full flex justify-between items-center gap-4">
-                <InputField
-                    placeholder="Where to?"
-                    type="text"
-                    icon={
-                        <i className="far fa-location-dot text-primary-500" />
-                    }
-                    name="to"
-                    control={control}
-                />
+            <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4">
+                <div className="w-full md:w-auto">
+                    <InputField
+                        placeholder="Where to?"
+                        type="text"
+                        icon={
+                            <i className="far fa-location-dot text-primary-500" />
+                        }
+                        name="to"
+                        control={control}
+                    />
+                </div>
 
-                <InputField
-                    placeholder="Dates"
-                    type="date"
-                    icon={
-                        <i className="far fa-calendar-days text-primary-500" />
-                    }
-                    name="date"
-                    control={control}
-                />
+                <div className="w-full md:w-auto">
+                    <InputField
+                        placeholder="Dates"
+                        type="date"
+                        icon={
+                            <i className="far fa-calendar-days text-primary-500" />
+                        }
+                        name="date"
+                        control={control}
+                    />
+                </div>
 
-                <InputField
-                    placeholder="Travelers"
-                    type="number"
-                    icon={<i className="far fa-user text-primary-500" />}
-                    name="travelers"
-                    control={control}
-                />
+                <div className="w-full md:w-auto">
+                    <InputField
+                        placeholder="Travelers"
+                        type="number"
+                        icon={<i className="far fa-user text-primary-500" />}
+                        name="travelers"
+                        control={control}
+                    />
+                </div>
 
                 <button
                     type="submit"
-                    className="bg-primary-500 text-white px-8 py-3 rounded-2xl font-medium"
+                    className="w-full md:w-auto bg-primary-500 text-white px-8 py-3 rounded-2xl font-medium"
                 >
                     Search
                 </button>

@@ -16,7 +16,7 @@ function Header() {
                     <img
                         src={pathname === "/" ? LightLogo : DarkLogo}
                         alt="Shasheen logo"
-                        className="w-10 h-10 sm:w-fit"
+                        className="w-full h-10 object-contain"
                         loading="lazy"
                     />
                 </Link>

@@ -103,17 +103,13 @@ const Guest = () => {
 
 export default function HeaderAuth({ setVisible }: HeaderProps) {
     const { user, isAuthenticated, logout } = useAuthStore();
-    const { locale } = localeStore();
+    const { isArabic } = localeStore();
     const [langVisible, setLangVisible] = useState(false);
 
     return (
         <div className="flex items-center gap-2">
             <Button
-                title={
-                    locale.split("-")[0].toUpperCase() === "AR"
-                        ? "ARABIC"
-                        : locale.split("-")[0].toUpperCase()
-                }
+                title={isArabic ? "ARABIC" : "ENGLISH"}
                 onClick={(e) => {
                     e.stopPropagation();
                     setLangVisible((perv) => !perv);
