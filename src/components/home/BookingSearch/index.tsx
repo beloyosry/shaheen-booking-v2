@@ -256,7 +256,7 @@ function BookingSearch() {
                     isArabic
                         ? "rounded-b-3xl rounded-tl-3xl"
                         : "rounded-b-3xl rounded-tr-3xl"
-                }  shadow-md overflow-x-hidden`}
+                }  shadow-md`}
             >
                 {/* Render Hotel search if activeBtn is 1 */}
                 {activeBtn === 1 ? (

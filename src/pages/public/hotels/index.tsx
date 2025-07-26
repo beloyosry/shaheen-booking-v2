@@ -110,9 +110,9 @@ const HotelsPage = () => {
 
     return (
         <div className="bg-[#f4f4f4]">
-            <PageLayout className="pb-20">
+            <PageLayout className="pb-20 px-5 md:px-0">
                 {/* Search Form */}
-                <div className="bg-white shadow-md border-gray-200 rounded-3xl mt-30 mb-10">
+                <div className="bg-white shadow-md border-gray-200 rounded-3xl mt-30 mb-10 ">
                     <HotelSearchForm
                         handleFormSubmit={onSubmit}
                         handleSubmit={handleSubmit}

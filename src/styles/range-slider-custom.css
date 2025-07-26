@@ -1,0 +1,38 @@
+/* Custom styles for the range slider */
+.range-slider {
+  height: 4px;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+}
+
+/* Active track (the colored part) */
+.range-slider .range-slider__range {
+  background-color: #f97316; /* primary-500 color */
+  border-radius: 9999px;
+}
+
+/* Thumb styles */
+.range-slider .range-slider__thumb {
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  border: 2px solid #f97316; /* primary-500 color */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Disable the default thumb outline */
+.range-slider .range-slider__thumb:focus {
+  outline: none;
+}
+
+/* Add some padding for better UX */
+.price-range-container {
+  padding: 10px 5px;
+}
+
+/* Price display */
+.price-display {
+  font-weight: 500;
+  color: #f97316; /* primary-500 color */
+}
